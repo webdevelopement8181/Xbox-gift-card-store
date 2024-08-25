@@ -7,7 +7,7 @@ function App() {
       <DataList /> 
 
     </div>
-    ccccc
+    
   );
 }
 
