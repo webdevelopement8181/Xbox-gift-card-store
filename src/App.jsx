@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react';
 import { Client, Functions } from 'appwrite';
 
 function App() {
-  const [message, setMessage] = useState('Loading...');
+  // const [message, setMessage] = useState('Loading...');
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
 
   useEffect(() => {
     // Initialize Appwrite client
@@ -13,27 +17,40 @@ function App() {
 
     const functions = new Functions(client);
 
-    // Call the function
-    functions.createExecution('66cacfca0006939c7b5d','', 'GET')
+    functions.createExecution('66cacfca0006939c7b5d')
     .then(response => {
-      console.log('Response:', response); // Log the entire response to the console
-      
-      // Parse the JSON response body
+      console.log('Response:', response.responseBody); // Log the raw response body
       const responseBody = JSON.parse(response.responseBody);
-      
-      // You can now access properties like `motto` from the parsed object
-      setMessage(responseBody.motto); // Update the state with a specific value from the response
+      console.log('Parsed Response Body:', responseBody); // Log the parsed response
+      setData(responseBody);
+      setLoading(false);
     })
-    .catch(error => {
-      console.error('Error:', error);
-      setMessage('Failed to load message.');
+    .catch(err => {
+      console.error('Error:', err);
+      setError('Failed to load data.');
+      setLoading(false);
     });
 }, []);
-  return (
-    <div>
-      <h1>{message}</h1>
-    </div>
-  );
+if (loading) return <div>Loading...</div>;
+if (error) return <div>{error}</div>;
+
+return (
+  <div>
+    <h1>Sample Data</h1>
+    <ul>
+      {Array.isArray(data) ? (
+        data.map(item => (
+          <li key={item.id}>
+            <h2>{item.name}</h2>
+            <p>{item.description}</p>
+          </li>
+        ))
+      ) : (
+        <li>No data available</li>
+      )}
+    </ul>
+  </div>
+);
 }
 
 export default App;
