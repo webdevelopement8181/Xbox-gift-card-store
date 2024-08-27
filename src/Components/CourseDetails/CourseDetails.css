@@ -1,0 +1,115 @@
+/* CourseDetails.css */
+
+.course-detail {
+
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.course-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.course-info {
+  max-width: 60%;
+}
+
+.course-info h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.course-info p {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.course-images {
+  width: 35%;
+  height: 40%;
+  border-radius: 10px;
+}
+
+.course-details-section {
+  margin-top: 40px;
+}
+
+.course-details-section h2,
+.course-details-section h3 {
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
+.learn-list,
+.requirements-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.learn-list li,
+.requirements-list li {
+  margin-bottom: 10px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+
+
+.course-video {
+  margin-top: 40px;
+}
+
+.course-video video {
+  width: 100%;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.cta-section {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.join-course-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 15px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.join-course-btn:hover {
+  background-color: #45a049;
+}
+
+.course-includes {
+  background-color: #ABC4AA;
+  padding: 20px;
+  border-radius: 10px;
+  width: 45%;
+}
+
+.course-includes h4 {
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.course-includes ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.course-includes li {
+  font-size: 16px;
+  margin-bottom: 10px;
+}

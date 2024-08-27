@@ -1,0 +1,86 @@
+/* Base styling for the navbar */
+.navbar {
+  margin-top:-6.5px;
+  width:100% ;
+  display: flex;
+  border-radius: 10px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff; /* Background color */
+  padding: 20px 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for some depth */
+}
+
+/* Styling for the logo */
+.navbar-logo a {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+}
+
+/* List items for navigation links */
+.navbar-links {
+  margin-right: 60px;
+  list-style: none;
+  display: flex;
+  gap: 35px;
+}
+
+/* Individual link styling */
+.navbar-links li a {
+  color: #333;
+  text-decoration: none;
+  font-size: 1em;
+  padding: 5px 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect for links */
+.navbar-links li a:hover {
+  background-color: #f0f0f0;
+  color: #007bff; /* Change color on hover */
+  border-radius: 5px;
+}
+
+/* Button styling for logout */
+.logout-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 1em;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Button hover effect */
+.logout-button:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive Design: Stack items vertically on smaller screens */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar-links {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .navbar-links li {
+    width: 100%;
+  }
+
+  .navbar-links li a,
+  .logout-button {
+    width: 100%;
+    text-align: left;
+  }
+}

@@ -1,0 +1,21 @@
+.courses-list {
+  padding: 20px;
+}
+
+.slick-slide {
+  padding: 10px;
+}
+
+.slick-slide img {
+  width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.course-card {
+  margin: 0 auto;
+}
+.course-header{
+  text-align: center;
+  text-transform: capitalize;
+}

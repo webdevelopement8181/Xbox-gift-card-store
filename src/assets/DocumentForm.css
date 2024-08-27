@@ -1,0 +1,89 @@
+/* Styles for the form container */
+.form-container {
+    margin-top: 120px;
+    margin-left: 700px;
+    width: 350px;
+    height: 550px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* Header style */
+.form-container::before {
+    content: '';
+    width: 100%;
+    height: 15px;
+    background-color: #00bcd4;
+    border-radius: 8px 8px 0 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Input field styles */
+.form-container label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-container input[type="text"],
+.form-container input[type="number"],
+.form-container textarea {
+    width: calc(100% - 40px);
+    padding: 10px 20px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 20px;
+    background-color: #f2f2f2;
+    outline: none;
+    font-size: 14px;
+    color: #333;
+    position: relative;
+}
+
+.form-container input[type="text"]::placeholder,
+.form-container input[type="number"]::placeholder,
+.form-container textarea::placeholder {
+    color: #aaa;
+}
+
+/* Styles for the number badges */
+.form-container input[type="text"] + span,
+.form-container input[type="number"] + span,
+.form-container textarea + span {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #3f51b5;
+    color: #fff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Button styles */
+.form-container button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff5722;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-container button[type="submit"]:hover {
+    background-color: #e64a19;
+}
