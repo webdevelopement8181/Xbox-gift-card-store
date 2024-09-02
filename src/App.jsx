@@ -5,6 +5,8 @@ import Navbar from './Components/NavBar/NavBar';
 import Home from './Components/Home/Home';
 import Login from './Components/LogIn/Login';
 import Products from './Components/Products/Products';
+import About from './Components/About/About';
+import Contact from './Components/Contact/Contact';
 import Hero from './Components/HeroSection/Hesro';
 import CourseDetails from './Components/CourseDetails/CourseDetails';
 import { account } from './appwrite';
@@ -48,10 +50,22 @@ function App() {
   return (
     <Router>
       <Routes>
-      <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />   
-      <Route path="/course/:id" element={<CourseDetails />} />
-           <Route 
-          path="*" 
+        <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+        <Route path="/course/:id" element={<CourseDetails />} />
+        <Route path="/admin/*" element={<AdminRoute />}>
+          <Route path="*" element={<AdminDashboard />}>
+            <Route path="" element={<ChartDashboard />} />
+            <Route path="courses" element={<CourseList collectionName="onlineCourse" />} />
+            <Route path="course-details" element={<CourseListDetail collectionName="courseDetails" />} />
+            <Route path="courses/create" element={<DocumentForm collectionName="onlineCourse" />} />
+            <Route path="courses/edit/:id" element={<DocumentForm collectionName="onlineCourse" />} />
+            <Route path="course-details/edit/:id" element={<DocumentFormDetail />} />
+          </Route>
+        </Route>
+
+        {/* Home Route with Navbar and Hero */}
+        <Route 
+          path="/" 
           element={
             <>
               <Navbar 
@@ -60,30 +74,28 @@ function App() {
                 handleLogout={handleLogout} 
               />
               <Hero />
-              
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/products" element={isAuthenticated ? <Products /> : <Navigate to="/login" />} />
-              
-              </Routes>
+              <Home />
             </>
           } 
         />
-<Route path="/admin/*" element={<AdminRoute />}>
-      {/* AdminDashboard is the main layout for all admin routes */}
-      <Route path="*" element={<AdminDashboard />}>
-        {/* Nested routes within AdminDashboard */}
-        <Route path="" element={<ChartDashboard />} />
-        <Route path="courses" element={<CourseList collectionName="onlineCourse" />} />
-        <Route path="course-details" element={<CourseListDetail collectionName="courseDetails" />} />
-        <Route path="courses/create" element={<DocumentForm collectionName="onlineCourse" />} />
-        <Route path="courses/edit/:id" element={<DocumentForm collectionName="onlineCourse" />} />
-        <Route path="course-details/edit/:id" element={<DocumentFormDetail />} />
-      </Route>
-    </Route>
-  </Routes>
-</Router>
+
+        {/* Other Routes without Navbar and Hero */}
+        <Route 
+          path="/products" 
+          element={isAuthenticated ? <Products /> : <Navigate to="/login" />} 
+        />
+        <Route 
+          path="/about" 
+          element={isAuthenticated ? <About /> : <Navigate to="/login" />} 
+        />
+        <Route 
+          path="/contact" 
+          element={isAuthenticated ? <Contact /> : <Navigate to="/login" />} 
+        />
+      </Routes>
+    </Router>
   );
 }
+
 
 export default App;

@@ -1,55 +1,81 @@
+.course-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
 .course-card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    width: 300px;
-    margin: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out;
-  }
-  
-  .course-card:hover {
-    transform: scale(1.05);
-  }
-  
-  .course-image {
-    height: 200px;
-    background-color: #f0f0f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .course-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .image-placeholder {
-    font-size: 1.2rem;
-    color: #aaa;
-  }
-  
-  .course-content {
-    padding: 16px;
-  }
-  
-  .course-title {
-    font-size: 1.5rem;
-    margin-bottom: 8px;
-  }
-  
-  .course-description {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 16px;
-  }
-  
-  .course-instructor,
-  .course-price {
-    font-size: 1rem;
-    margin-bottom: 8px;
-    color: #333;
-  }
-  
+  width: 400px; /* Fixed width */
+  height: 650px; /* Allow height to adjust based on content */
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #fff; /* Background color for the card */
+  color: white; /* Text color */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0px 4px 10px rgba(184, 138, 138, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+}
+
+.course-image {
+  width: 100%;
+  height: 60%; /* Fixed height for the image section */
+  background-color: #e0e0e0; /* Background color for placeholder */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.course-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the image covers the area without distortion */
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: #777;
+}
+
+.course-content {
+  padding: 15px;
+}
+
+.course-title {
+  color: #110202;
+  font-size: 1rem;
+  margin: 0;
+  font-weight: bold;
+}
+
+.course-description {
+  font-size: 0.875rem;
+  margin: 5px 0;
+  color: #110202; /* Adjust text color if needed */
+}
+
+.course-region {
+  font-size: 0.875rem;
+  margin: 10px 0;
+  color: #12190d; /* Green color for region */
+}
+
+.course-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #190a0a;
+  margin: 10px 0;
+}
+.buy-icon {
+  color: #180f0f;
+  font-size: 1.5rem; /* Adjust size to match the price */
+}

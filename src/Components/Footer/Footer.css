@@ -1,72 +1,80 @@
-/* Base styling for the footer */
 .footer {
-  width: 100%;
-    background-color: #ABC4AA;
-    padding: 20px 40px;
-    height: 15vh;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .footer-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .footer-logo img {
-    width: 150px;
-    margin-bottom: 10px;
-  }
-  
-  .footer-logo p {
-    font-size: 24px;
-    color: #666;
-    margin-bottom: 20px;
-  }
-  
-  .footer-social a {
-    color: #666;
-    margin-right: 15px;
-    font-size: 18px;
-    transition: color 0.3s ease;
-  }
-  
-  .footer-social a:hover {
-    color: #007bff;
-  }
-  
-  .footer-links {
-    display: flex;
-  }
-  
-  .footer-column {
-    margin-right: 40px;
-  }
-  
-  .footer-column h4 {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 15px;
-  }
-  
-  .footer-column ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .footer-column ul li {
-    margin-bottom: 10px;
-  }
-  
-  .footer-column ul li a {
-    text-decoration: none;
-    color: #666;
-    transition: color 0.3s ease;
-  }
-  
-  .footer-column ul li a:hover {
-    color: #007bff;
-  }
-  
+  margin-left: -10px;
+  background-color: #ABC4AA;
+  font-family: Arial, sans-serif;
+  margin-bottom: -8px;
+  width: 2028px;
+
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-around;
+  height: 15%;
+ 
+}
+
+.footer-section {
+  flex: 1;
+  margin-left: 90px;
+}
+
+.footer-section h3 {
+  font-size: 16px;
+  /* margin-bottom: 10px; */
+}
+
+.footer-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 8px;
+}
+
+.footer-section ul li a {
+  text-decoration: none;
+  color: #000;
+}
+
+.footer-section ul li a:hover {
+  text-decoration: underline;
+}
+
+.social-icons a {
+  margin-right: 10px;
+  color: #000;
+}
+
+.footer-bottom {
+  text-align: center;
+  border-top: 1px solid #ddd;
+  padding: 10px 0;
+  margin-top: 20px;
+}
+
+.footer-bottom p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.footer-links {
+  list-style-type: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+}
+
+.footer-links li {
+  display: inline;
+  margin-right: 15px;
+}
+
+.footer-links li a {
+  text-decoration: none;
+  color: #000;
+}
+
+.footer-links li a:hover {
+  text-decoration: underline;
+}

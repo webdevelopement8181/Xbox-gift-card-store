@@ -1,11 +1,10 @@
 
 import Slider from 'react-slick';
-import './Hero.css';  // Import the CSS file for styling
+import './Hero.css';  
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
-import image1 from '../../assets/image1.jpg';
-import image2 from '../../assets/image2.jpg';
-import image3 from '../../assets/image3.jpg';
+import img3 from '../../assets/img3.jpg';
+import img2 from '../../assets/img2.jpg';
 
 
 
@@ -22,7 +21,8 @@ const Hero = () => {
   };
 
   const images = [
-image1, image2 , image3
+img2,img3
+    
 ];
 
   return (

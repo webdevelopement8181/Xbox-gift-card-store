@@ -1,9 +1,28 @@
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useNavigate } from 'react-router-dom';
-import './NavBar.css';
+import { useNavigate } from 'react-router-dom';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import LanguageIcon from '@mui/icons-material/Language';
+import SearchBar from '../SearchBar/SearchBar'
+
+
 
 const Navbar = ({ isAuthenticated, handleLogout }) => {
   const navigate = useNavigate();
+  const [xbox, setXbox] = useState(null);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV !== 'test') {
+      import('../../assets/xbox.jpg').then((image) => {
+        setXbox(image.default); // Set the imported image to state
+      });
+    }
+  }, []);
 
   const handleLoginClick = (event) => {
     if (isAuthenticated) {
@@ -18,24 +37,66 @@ const Navbar = ({ isAuthenticated, handleLogout }) => {
   };
 
   return (
-    <nav className="navbar">
-      <div className="navbar-logo">
-        <Link to="/">MyApp</Link>
-      </div>
-      <ul className="navbar-links">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/products">Products</Link></li>
+    <AppBar position="static" color="transparent" elevation={0} sx={{ borderBottom: '1px solid #e0e0e0' }}>
+      <Toolbar>
+        <img src={xbox} alt="Logo" style={{ marginRight: '16px', height: '90px' }} />
+
+        <Typography variant="h6" color="inherit" sx={{ flexGrow: 1 }}>
+<SearchBar/>
+        </Typography>
+
+        {['Products', 'About', 'Contact'].map((text, index) => (
+          <Button 
+            key={index} 
+            color="inherit" 
+            sx={{ textTransform: 'none', fontSize: '0.875rem', fontWeight: 500, marginRight: '16px', color: '#1a1a1a' }}
+            onClick={() => navigate(`/${text.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}`)}
+          >
+            {text}
+          </Button>
+        ))}
+
+        <IconButton color="inherit" sx={{ color: '#1a1a1a' }}>
+      
+        </IconButton>
+
         {!isAuthenticated ? (
-          <li><Link to="/login" onClick={handleLoginClick}>Log In</Link></li>
+          
+        <IconButton 
+        color="inherit" 
+        sx={{ color: '#1a1a1a', fontSize: '0.875rem' }} 
+        onClick={handleLoginClick}
+      >
+       
+        <AccountCircle />
+        <span style={{ fontSize: '0.875rem', marginRight: '15px' }}>Profile</span>
+      </IconButton>
+      
         ) : (
-          <li><button onClick={handleLogout} className="logout-button">Log Out</button></li>
+          <Button 
+            color="inherit" 
+            onClick={handleLogout} 
+            sx={{ textTransform: 'none', color: '#1a1a1a', marginRight: '16px' }}
+          >
+            Log Out
+          </Button>
         )}
-      </ul>
-    </nav>
+
+        <Button 
+          color="inherit" 
+          startIcon={<LanguageIcon />} 
+          sx={{ textTransform: 'none', backgroundColor: '#675D50', color: 'white', padding: '6px 12px', borderRadius: '10px' }}
+        >
+          English
+        </Button>
+      </Toolbar>
+    </AppBar>
   );
 };
+
 Navbar.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired, // isAuthenticated must be a boolean and is required
-  handleLogout: PropTypes.func.isRequired,   // handleLogout must be a function and is required
+  isAuthenticated: PropTypes.bool.isRequired,
+  handleLogout: PropTypes.func.isRequired,
 };
+
 export default Navbar;

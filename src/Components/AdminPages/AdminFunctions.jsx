@@ -26,13 +26,12 @@ export const CourseCreate = () => {
     <Create saveButtonProps={saveButtonProps}>
       <form {...formProps}>
         <input placeholder="Title" {...formProps.register('title')} />
-        <input placeholder="Instructor" {...formProps.register('instructor')} />
         <input placeholder="Price" {...formProps.register('price')} />
         <input placeholder="Image URL" {...formProps.register('image')} />
         <input placeholder="Detailed Description" {...formProps.register('detailedDescription')} />
         <input placeholder="Rating" {...formProps.register('rating')} />
         <input placeholder="Language" {...formProps.register('language')} />
-        <input placeholder="Demo Video URL" {...formProps.register('demoVideo')} />
+        {/* <input placeholder="Demo Video URL" {...formProps.register('demoVideo')} /> */}
         <button type="submit">Save</button>
       </form>
     </Create>

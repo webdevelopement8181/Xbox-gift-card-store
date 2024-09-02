@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import  React, { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { account } from "../../appwrite"; // Adjust the import based on your setup
 // import AdminDashboard from '../Dashboard/AdminDashboard'; // Import the AdminDashboard component

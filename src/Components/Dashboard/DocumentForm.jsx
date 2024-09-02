@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { databases } from '../../appwrite';
 import { useNavigate, useParams } from 'react-router-dom';
-import '../../assets/DocumentForm.css'; // Import the CSS file
+import '../../assets/DocumentForm.css'; 
 
 const DocumentForm = ({ collectionName }) => {
     const navigate = useNavigate();
     const { id: documentId } = useParams(); // Get the documentId from the route parameters
 
     const collectionMapping = {
-        onlineCourse: '66bef5ba002e0d84160f', // Replace with actual ID
+        onlineCourse: '66cde1ce003c4c7dfb11', 
     };
 
     const collectionId = collectionMapping[collectionName];
@@ -18,8 +18,7 @@ const DocumentForm = ({ collectionName }) => {
         title: '',
         description: '',
         price: '',
-        instructor: '',
-        cover: ''
+        image: ''
     });
 
     const [error, setError] = useState('');
@@ -29,13 +28,12 @@ const DocumentForm = ({ collectionName }) => {
         const fetchDocument = async () => {
             if (documentId) { // Only fetch if documentId is provided (indicating edit mode)
                 try {
-                    const response = await databases.getDocument('66bef5b0002aa8052fc4', collectionId, documentId);
+                    const response = await databases.getDocument('66cde1b70007c60cbc12', collectionId, documentId);
                     setFormData({
                         title: response.title || '',
                         description: response.description || '',
                         price: response.price || '',
-                        instructor: response.instructor || '',
-                        cover: response.cover || ''
+                       image: response.image || ''
                     });
                 } catch (error) {
                     console.error('Error fetching document:', error);
@@ -64,7 +62,7 @@ const DocumentForm = ({ collectionName }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!isValidURL(formData.cover)) {
+        if (!isValidURL(formData.image)) {
             setError('Cover must be a valid URL');
             return;
         }
@@ -79,10 +77,10 @@ const DocumentForm = ({ collectionName }) => {
 
             if (documentId) {
                 // Update existing document
-                await databases.updateDocument('66bef5b0002aa8052fc4', collectionId, documentId, dataToSubmit);
+                await databases.updateDocument('66cde1b70007c60cbc12', collectionId, documentId, dataToSubmit);
             } else {
                 // Create new document
-                await databases.createDocument('66bef5b0002aa8052fc4', collectionId, 'unique()', dataToSubmit);
+                await databases.createDocument('66cde1b70007c60cbc12', collectionId, 'unique()', dataToSubmit);
             }
             // Redirect to the corresponding list view
             navigate('/admin/courses');
@@ -90,35 +88,53 @@ const DocumentForm = ({ collectionName }) => {
             console.error('Error saving document:', error);
         }
     };
-
     return (
         <div className="form-container">
             {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error if any */}
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>Title</label>
-                    <input type="text" name="title" value={formData.title} onChange={handleChange} required />
-            
+                    <label htmlFor="title">Title</label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        value={formData.title}
+                        onChange={handleChange}
+                        required
+                    />
                 </div>
                 <div>
-                    <label>Description</label>
-                    <textarea name="description" value={formData.description} onChange={handleChange} required></textarea>
-                  
+                    <label htmlFor="description">Description</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        value={formData.description}
+                        onChange={handleChange}
+                        required
+                    />
                 </div>
                 <div>
-                    <label>Price</label>
-                    <input type="number" step="0.01" name="price" value={formData.price} onChange={handleChange} required />
-                  
+                    <label htmlFor="price">Price</label>
+                    <input
+                        type="number"
+                        step="0.01"
+                        id="price"
+                        name="price"
+                        value={formData.price}
+                        onChange={handleChange}
+                        required
+                    />
                 </div>
                 <div>
-                    <label>Instructor</label>
-                    <input type="text" name="instructor" value={formData.instructor} onChange={handleChange} required />
-                 
-                </div>
-                <div>
-                    <label>Cover</label>
-                    <input type="text" name="cover" value={formData.cover} onChange={handleChange} required />
-                 44444444444
+                    <label htmlFor="image">Image</label>
+                    <input
+                        type="text"
+                        id="image"
+                        name="image"
+                        value={formData.image}
+                        onChange={handleChange}
+                        required
+                    />
                 </div>
                 <button type="submit">Save</button>
             </form>

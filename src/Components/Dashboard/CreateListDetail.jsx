@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React,{ useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconButton, Table, TableBody, TableCell, TableHead, TableRow, Paper, Container } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
@@ -8,12 +8,12 @@ const CourseListDetail = () => {
     const [details, setDetails] = useState([]);
     const navigate = useNavigate();
 
-    const collectionId = '66c03a2e0015e930fa13'; // ID of the courseDetails collection
+    const collectionId = '66cde5d000045bfa07ae'; // ID of the courseDetails collection
 
     useEffect(() => {
         const fetchDetails = async () => {
             try {
-                const response = await databases.listDocuments('66bef5b0002aa8052fc4', collectionId);
+                const response = await databases.listDocuments('66cde1b70007c60cbc12', collectionId);
                 console.log('Fetched details:', response.documents); // Debugging output
                 setDetails(response.documents);
             } catch (error) {
@@ -26,7 +26,7 @@ const CourseListDetail = () => {
 
     const handleDelete = async (id) => {
         try {
-            await databases.deleteDocument('66bef5b0002aa8052fc4', collectionId, id);
+            await databases.deleteDocument('66cde1b70007c60cbc12', collectionId, id);
             setDetails(details.filter((detail) => detail.$id !== id));
         } catch (error) {
             console.error('Error deleting detail:', error);
@@ -59,7 +59,7 @@ const CourseListDetail = () => {
                                     <TableCell>{detail.detailedDescription}</TableCell>
                                     <TableCell>{detail.rating}</TableCell>
                                     <TableCell>{detail.language}</TableCell>
-                                    <TableCell>{detail.demoVideo}</TableCell>
+                                    {/* <TableCell>{detail.demoVideo}</TableCell> */}
                                     <TableCell>
                                         <IconButton color="primary" onClick={() => handleEdit(detail.$id)}>
                                             <Edit />

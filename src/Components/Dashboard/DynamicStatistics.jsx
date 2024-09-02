@@ -15,7 +15,7 @@ const DynamicStatistics = () => {
     const fetchStatistics = async () => {
       try {
         // Fetch number of titles in onlineCourse collection
-        const onlineCourseResponse = await databases.listDocuments('66bef5b0002aa8052fc4', '66bef5ba002e0d84160f');
+        const onlineCourseResponse = await databases.listDocuments('66cde1b70007c60cbc12', '66cde1ce003c4c7dfb11');
         console.log('OnlineCourse Response:', onlineCourseResponse);  // Debugging output
         setOnlineCourseCount(onlineCourseResponse.total);
 

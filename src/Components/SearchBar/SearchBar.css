@@ -1,0 +1,33 @@
+.icon-search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #ABC4AA;
+    color: #fff;
+    padding: 8px;
+    border-radius: 20px;
+    transition: width 0.3s ease;
+    width: 30px; 
+    cursor: pointer;
+    overflow: hidden; 
+  }
+  
+  .icon-search-bar.expanded {
+    width: 500px; 
+    height: 15px;
+  }
+  
+  .icon-search-bar i {
+    font-size: 16px;
+    margin-right: 8px;
+  }
+  
+  .input-search {
+    border: none;
+    padding: 5px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 3px;
+    width: 100%; /* Full width of the expanded bar */
+    outline: none;
+  }
+  

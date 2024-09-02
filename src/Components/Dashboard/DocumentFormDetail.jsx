@@ -1,18 +1,17 @@
-import { useState, useEffect } from 'react';
+import React ,{ useState, useEffect } from 'react';
 import { databases } from '../../appwrite';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const DocumentFormDetail = () => {
     const navigate = useNavigate();
-    const { id: detailId } = useParams(); // Get the detailId from the route parameters
-    const collectionId = '66c03a2e0015e930fa13'; // ID of the courseDetails collection
+    const { id: detailId } = useParams(); 
+    const collectionId = '66cde5d000045bfa07ae'; // ID of the courseDetails collection
 
     const [formData, setFormData] = useState({
         detailedDescription: '',
-        rating: '',  // Handle rating as a string
+        rating: '',  
         language: '',
-        demoVideo: '',
-        courseId: '' // User will manually input this
+        coursrId: '' 
     });
 
     const [error, setError] = useState('');
@@ -21,13 +20,13 @@ const DocumentFormDetail = () => {
         const fetchDocument = async () => {
             if (detailId) { // Only fetch if detailId is provided (indicating edit mode)
                 try {
-                    const response = await databases.getDocument('66bef5b0002aa8052fc4', collectionId, detailId);
+                    const response = await databases.getDocument('66cde1b70007c60cbc12', collectionId, detailId);
                     setFormData({
                         detailedDescription: response.detailedDescription || '',
-                        rating: response.rating || '', // Load rating as a string
+                        rating: response.rating || '',
                         language: response.language || '',
-                        demoVideo: response.demoVideo || '',
-                        courseId: response.courseId || '' // Load courseId from the document
+                        
+                        coursrId: response.coursrId || ''
                     });
                 } catch (error) {
                     console.error('Error fetching document:', error);
@@ -71,7 +70,7 @@ const DocumentFormDetail = () => {
 
             if (detailId) {
                 // Update existing detail
-                await databases.updateDocument('66bef5b0002aa8052fc4', collectionId, detailId, dataToSubmit);
+                await databases.updateDocument('66cde1b70007c60cbc12', collectionId, detailId, dataToSubmit);
                 navigate(`/admin/course-details`); // Redirect to the details list
             } else {
                 console.error('Creating new details is not allowed.');
@@ -85,18 +84,20 @@ const DocumentFormDetail = () => {
         <form onSubmit={handleSubmit}>
             {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error if any */}
             <div>
-                <label>Course ID</label>
+                <label htmlFor="coursrId">Course ID</label>
                 <input
                     type="text"
-                    name="courseId"
-                    value={formData.courseId}
+                    id="coursrId"
+                    name="coursrId"
+                    value={formData.coursrId}
                     onChange={handleChange}
                     required
                 />
             </div>
             <div>
-                <label>Detailed Description</label>
+                <label htmlFor="detailedDescription">Detailed Description</label>
                 <textarea
+                    id="detailedDescription"
                     name="detailedDescription"
                     value={formData.detailedDescription}
                     onChange={handleChange}
@@ -104,9 +105,10 @@ const DocumentFormDetail = () => {
                 ></textarea>
             </div>
             <div>
-                <label>Rating</label>
+                <label htmlFor="rating">Rating</label>
                 <input
                     type="text"
+                    id="rating"
                     name="rating"
                     value={formData.rating}
                     onChange={handleChange}
@@ -114,13 +116,17 @@ const DocumentFormDetail = () => {
                 />
             </div>
             <div>
-                <label>Language</label>
-                <input type="text" name="language" value={formData.language} onChange={handleChange} required />
+                <label htmlFor="language">Language</label>
+                <input
+                    type="text"
+                    id="language"
+                    name="language"
+                    value={formData.language}
+                    onChange={handleChange}
+                    required
+                />
             </div>
-            <div>
-                <label>Demo Video</label>
-                <input type="text" name="demoVideo" value={formData.demoVideo} onChange={handleChange} required />
-            </div>
+           
             <button type="submit">Save</button>
         </form>
     );

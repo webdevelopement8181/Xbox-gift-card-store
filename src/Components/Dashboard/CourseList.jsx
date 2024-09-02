@@ -1,18 +1,18 @@
 
-import  { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconButton, Button, Table, TableBody, TableCell, TableHead, TableRow, Paper, Container } from '@mui/material';
 import { Edit, Delete, Add } from '@mui/icons-material';
 import { databases } from '../../appwrite';
 
-const OnlineCourseList = () => {
+const CourseList = () => {
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await databases.listDocuments('66bef5b0002aa8052fc4', '66bef5ba002e0d84160f');
+        const response = await databases.listDocuments('66cde1b70007c60cbc12' ,'66cde1ce003c4c7dfb11');
         setCourses(response.documents);
       } catch (error) {
         console.error('Error fetching courses:', error);
@@ -24,7 +24,7 @@ const OnlineCourseList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await databases.deleteDocument('66bef5b0002aa8052fc4', '66bef5ba002e0d84160f', id);
+      await databases.deleteDocument('66cde1b70007c60cbc12', '66cde1ce003c4c7dfb11', id);
       setCourses(courses.filter((course) => course.$id !== id));
     } catch (error) {
       console.error('Error deleting course:', error);
@@ -81,5 +81,5 @@ const OnlineCourseList = () => {
   );
 };
 
-export default OnlineCourseList;
+export default CourseList;
 

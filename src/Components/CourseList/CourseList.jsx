@@ -1,5 +1,5 @@
-import  { useEffect, useState } from 'react';
-import { databases } from '../../appwrite'; 
+import React, { useEffect, useState } from 'react';
+import { databases, Query } from '../../appwrite'; 
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick';
@@ -8,30 +8,39 @@ import './CourseList.css';
 
 const CoursesList = () => {
   const [courses, setCourses] = useState([]);
+  const [hasError, setHasError] = useState(false); // error state
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
         const response = await databases.listDocuments(
-          '66bef5b0002aa8052fc4', 
-          '66bef5ba002e0d84160f' 
+          '66cde1b70007c60cbc12', 
+          '66cde1ce003c4c7dfb11',
+          [
+            Query.equal('IsPopular', true) // Filter to only include popular courses
+          ]
         );
         setCourses(response.documents);
       } catch (error) {
         console.error('Error fetching courses:', error);
+        setHasError(true); // Set error state if fetch fails
       }
     };
 
     fetchCourses();
   }, []);
 
-  const settings = {
+  if (hasError) {
+    return <div>Error fetching courses.</div>; 
+  }
+   
+   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 4, 
     slidesToScroll: 1,
-autoplaySpeed: 2000,
+    autoplaySpeed: 2000,
     cssEase: "linear",
     arrows: true,
     responsive: [
@@ -61,28 +70,28 @@ autoplaySpeed: 2000,
     ]
   };
 
+
   return (
     <div>
-      <h1 className='course-header'>popular courses</h1>
-      
-    <div className="courses-list">
-      <Slider {...settings}>
-        {courses.map(course => (
-          <div key={course.$id}>
-            <CourseCard
-               id={course.$id}
-              title={course.title}
-              description={course.description}
-              instructor={course.instructor}
-              price={course.price}
-              image={course.cover}
-            />
-          </div>
-        ))}
-      </Slider>
-    </div>
+      <h1 className='course-header'>Popular Courses</h1>
+      <div className="courses-list">
+        <Slider {...settings}>
+          {courses.map(course => (
+            <div key={course.$id}>
+              <CourseCard
+                id={course.$id}
+                title={course.title}
+                description={course.description}
+                price={course.price}
+                image={course.image}
+              />
+            </div>
+          ))}
+        </Slider>
+      </div>
     </div>
   );
 };
+
 
 export default CoursesList;

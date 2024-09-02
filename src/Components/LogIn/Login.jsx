@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { account } from "../../appwrite"; // Adjust the import based on your setup
 import { useNavigate } from "react-router-dom";
 import PropTypes from 'prop-types';
 import './Login.css'; 
 
-const Auth = ({ setIsAuthenticated }) => {
+const Login = ({ setIsAuthenticated }) => {
     const [user, setUser] = useState(null);
+    const [name, setName] = useState(""); // State to store the user's name
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(""); // State to store error messages
@@ -14,6 +15,7 @@ const Auth = ({ setIsAuthenticated }) => {
     const handleRedirect = () => {
         navigate('/');
     };
+
     useEffect(() => {
         const checkUser = async () => {
             try {
@@ -54,7 +56,7 @@ const Auth = ({ setIsAuthenticated }) => {
 
     const handleSignUp = async () => {
         try {
-            await account.create("unique()", email, password);
+            await account.create("unique()", email, password, name); // Pass the name to the account creation
             handleLogin(); // Automatically log in after signing up
         } catch (error) {
             console.log(error);
@@ -72,6 +74,13 @@ const Auth = ({ setIsAuthenticated }) => {
                         <h2>Login / Sign Up</h2>
                         {error && <p className="error-message">{error}</p>}
                         <div className="input-section">
+                        <input
+                            type="text"
+                            placeholder="Name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="auth-input"
+                        />
                         <input
                             type="email"
                             placeholder="Email"
@@ -94,16 +103,15 @@ const Auth = ({ setIsAuthenticated }) => {
                     </div>
                 )}
                 <div onClick={handleRedirect}  className="redirect-message">
-                  click here if you dont want to signin/login
-                  </div>
+                  click here if you dot want to sign in/login
+                </div>
             </div>
-         
         </div>
     );
 };
 
-Auth.propTypes = {
+Login.propTypes = {
   setIsAuthenticated: PropTypes.func.isRequired,  // setIsAuthenticated must be a function and is required
 };
 
-export default Auth;
+export default Login;
