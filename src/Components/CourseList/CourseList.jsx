@@ -11,7 +11,9 @@ const CoursesList = () => {
   const [hasError, setHasError] = useState(false); // error state
 
   useEffect(() => {
+    // Add this line
     const fetchCourses = async () => {
+      console.log('useEffect triggered'); 
       try {
         const response = await databases.listDocuments(
           '66cde1b70007c60cbc12', 
@@ -23,7 +25,8 @@ const CoursesList = () => {
         setCourses(response.documents);
       } catch (error) {
         console.error('Error fetching courses:', error);
-        setHasError(true); // Set error state if fetch fails
+        setHasError(true); 
+        // Set error state if fetch fails
       }
     };
 
