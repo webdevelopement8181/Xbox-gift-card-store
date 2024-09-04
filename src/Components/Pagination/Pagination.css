@@ -1,0 +1,38 @@
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 20px 0;
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.pagination li button {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.pagination li.active button {
+  background-color: #4CAF50;
+  color: white;
+  border: 1px solid #4CAF50;
+}
+
+.pagination li button:hover {
+  background-color: #ccc;
+}
+
+.pagination li button:disabled {
+  background-color: #eee;
+}
