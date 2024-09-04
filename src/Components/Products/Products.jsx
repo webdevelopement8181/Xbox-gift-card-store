@@ -4,7 +4,7 @@ import CourseCard from '../CourseCard/CourseCards';
 import  Pagination from '../Pagination/Pagination'
 import './Products.css'; // Import your CSS styles
 
-const FilteredProducts = () => {
+const Products = () => {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -113,4 +113,4 @@ const FilteredProducts = () => {
   );
 };
 
-export default FilteredProducts;
+export default Products;
