@@ -16,7 +16,10 @@ import CourseList from './Components/Dashboard/CourseList';
 import DocumentForm from './Components/Dashboard/DocumentForm'; 
 import CourseListDetail from './Components/Dashboard/CreateListDetail';
 import DocumentFormDetail from './Components/Dashboard/DocumentFormDetail';
-import AdminRoute from './Components/Dashboard/AdminRoute'
+import AdminRoute from './Components/Dashboard/AdminRoute';
+import CartList from './Components/CartList/CartList';
+import { CartProvider } from './Components/Context/CartContext';
+
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -48,6 +51,7 @@ function App() {
   };
 
   return (
+    <CartProvider>
     <Router>
       <Routes>
         <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
@@ -60,6 +64,7 @@ function App() {
             <Route path="courses/create" element={<DocumentForm collectionName="onlineCourse" />} />
             <Route path="courses/edit/:id" element={<DocumentForm collectionName="onlineCourse" />} />
             <Route path="course-details/edit/:id" element={<DocumentFormDetail />} />
+         
           </Route>
         </Route>
 
@@ -75,6 +80,7 @@ function App() {
               />
               <Hero />
               <Home />
+              
             </>
           } 
         />
@@ -92,8 +98,10 @@ function App() {
           path="/contact" 
           element={isAuthenticated ? <Contact /> : <Navigate to="/login" />} 
         />
+           <Route path="/cart" element={<CartList />} />
       </Routes>
     </Router>
+    </CartProvider>
   );
 }
 

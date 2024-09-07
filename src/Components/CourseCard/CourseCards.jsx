@@ -4,10 +4,17 @@ import { Link } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import './CourseCard.css';  
 
-const CourseCard = ({ id, title, description, price, image, region }) => {
+const CourseCard = ({ id, title, description, price, image, inSale, discountPercentage }) => {
+  
+  // Calculate discounted price if the product is on sale
+  const discountedPrice = inSale ? (price - (price * discountPercentage / 100)).toFixed(2) : price;
+
   return (
     <Link to={`/course/${id}`} className="course-card-link">
       <div className="course-card">
+        
+      {inSale && <span className="sale-badge">Sale {discountPercentage}% Off</span>}
+
         <div className="course-image">
           {image ? (
             <img src={image} alt={title} />
@@ -15,18 +22,28 @@ const CourseCard = ({ id, title, description, price, image, region }) => {
             <div className="image-placeholder">Image</div>
           )}
         </div>
+
         <div className="course-content">
           <h2 className="course-title">{title}</h2>
           <p className="course-description">{description}</p>
-          <p className="course-region">{region}</p>
-          <p className="course-price">From <strong>${price}</strong></p>
-          <ShoppingCartIcon className="buy-icon" />ff
+
+          <div className="course-price">
+            {inSale ? (
+              <>
+                <span className="original-price">${price}</span>
+                <span className="discounted-price">${discountedPrice}</span>
+              </>
+            ) : (
+              <span>${price}</span>  // Regular price if not on sale
+            )}
+          </div>
+
+          <ShoppingCartIcon className="buy-icon" />
         </div>
       </div>
     </Link>
   );
 };
-
 
 CourseCard.propTypes = {
   id: PropTypes.string.isRequired, 
@@ -34,6 +51,8 @@ CourseCard.propTypes = {
   description: PropTypes.string.isRequired, 
   price: PropTypes.number.isRequired,  
   image: PropTypes.string,  
-}
+  inSale: PropTypes.bool,
+  discountPercentage: PropTypes.number
+};
 
 export default CourseCard;

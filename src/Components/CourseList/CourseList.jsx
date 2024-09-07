@@ -3,7 +3,7 @@ import { databases, Query } from '../../appwrite';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick';
-import CourseCard from './../CourseCard/CourseCards';
+import CourseCards from '../CourseCard/CourseCards';
 import './CourseList.css';
 
 const CoursesList = () => {
@@ -81,12 +81,14 @@ const CoursesList = () => {
         <Slider {...settings}>
           {courses.map(course => (
             <div key={course.$id}>
-              <CourseCard
+              <CourseCards
                 id={course.$id}
                 title={course.title}
                 description={course.description}
                 price={course.price}
                 image={course.image}
+                inSale={course.inSale}  // Pass isInSale
+                discountPercentage={course.discountPercentage}  // Pass discountPercentage
               />
             </div>
           ))}

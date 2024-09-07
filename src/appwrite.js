@@ -1,4 +1,4 @@
-import { Client, Account, Databases, OAuthProvider, Query } from 'appwrite';
+import { Client, Account, Databases, OAuthProvider, Query, ID } from 'appwrite';
 
 // Initialize the Appwrite client
 const client = new Client();
@@ -42,4 +42,4 @@ export const fetchProducts = async (minPrice, maxPrice, Category, newest = false
   }
 };
 
-export { account, databases, OAuthProvider, Query };
+export { account, databases, OAuthProvider, Query, ID };

@@ -1,115 +1,121 @@
-/* CourseDetails.css */
-
-.course-detail {
-
-  max-width: 1200px;
-  margin: 0 auto;
+/* General Container Styling */
+.gift-card-detail-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
   padding: 20px;
 }
 
-.course-detail-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-}
-
-.course-info {
-  max-width: 60%;
-}
-
-.course-info h1 {
-  font-size: 36px;
-  margin-bottom: 20px;
-}
-
-.course-info p {
-  font-size: 18px;
-  line-height: 1.6;
-  margin-bottom: 10px;
-}
-
-.course-images {
-  width: 35%;
-  height: 40%;
-  border-radius: 10px;
-}
-
-.course-details-section {
-  margin-top: 40px;
-}
-
-.course-details-section h2,
-.course-details-section h3 {
-  margin-bottom: 20px;
-  font-size: 28px;
-}
-
-.learn-list,
-.requirements-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-.learn-list li,
-.requirements-list li {
-  margin-bottom: 10px;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-}
-
-
-
-.course-video {
-  margin-top: 40px;
-}
-
-.course-video video {
+/* Horizontal Line Styling */
+/* .line {
+  position: relative;
   width: 100%;
-  border-radius: 10px;
-  margin-top: 10px;
+  height: 2px;
+  background-color: #ccc;
+  margin-bottom: 20px;
+} */
+
+/* Buy Icon Container */
+.buy-icon-container {
+  position: relative;
+  display: inline-block;
 }
 
-.cta-section {
-  margin-top: 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+/* Buy Icon Styling */
+.buy-icon {
+  font-size: 2em;
+  color: #f59e0b;
+  position: relative;
 }
 
-.join-course-btn {
-  background-color: #4CAF50;
+/* Quantity Circle */
+.quantity-circle {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: red;
   color: white;
-  padding: 15px 30px;
-  font-size: 18px;
-  border: none;
-  border-radius: 5px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+/* Image Section */
+.gift-card-image-section {
+  flex: 1;
+}
+
+.gift-card-image {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Info Section */
+.gift-card-info-section {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 20px;
+}
+
+.gift-card-info-section h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.price {
+  font-size: 1.8em;
+  color: purple;
+  font-weight: bold;
+}
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.quantity-selector button {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
   cursor: pointer;
 }
 
-.join-course-btn:hover {
-  background-color: #45a049;
+.quantity-selector span {
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
-.course-includes {
-  background-color: #ABC4AA;
-  padding: 20px;
-  border-radius: 10px;
-  width: 45%;
-}
-
-.course-includes h4 {
+.action-buttons {
+  display: flex;
+  gap: 15px;
   margin-bottom: 20px;
-  font-size: 20px;
 }
 
-.course-includes ul {
-  list-style-type: none;
-  padding: 0;
+.add-to-cart-btn, .add-to-wishlist-btn {
+  background-color: #3b82f6;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 5px;
 }
 
-.course-includes li {
-  font-size: 16px;
-  margin-bottom: 10px;
+.add-to-wishlist-btn {
+  background-color: #f59e0b;
 }

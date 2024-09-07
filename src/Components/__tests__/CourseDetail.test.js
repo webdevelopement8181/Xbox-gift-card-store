@@ -1,140 +1,106 @@
 import React from 'react';
-import { render, waitFor, act } from '@testing-library/react';
-import { useParams } from 'react-router-dom';
-import CourseDetail from '../CourseDetails/CourseDetails.jsx';
-import { databases, Query } from '../../appwrite.js';  
+import { render, screen, fireEvent } from '@testing-library/react';
+import CourseDetails from '../CourseDetails/CourseDetails.jsx';
+import { useCart } from '../Context/CartContext';
+import { databases } from '../../appwrite';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-// Mocking useParams from react-router-dom
-jest.mock('react-router-dom', () => ({
-  useParams: jest.fn(),
+// Mock useCart hook
+jest.mock('../Context/CartContext', () => ({
+  useCart: jest.fn(),
 }));
 
-// Mocking the appwrite databases and Query
+// Mock Appwrite databases
 jest.mock('../../appwrite', () => ({
   databases: {
     getDocument: jest.fn(),
     listDocuments: jest.fn(),
   },
-  Query: {
-    equal: jest.fn(),
-  },
 }));
 
-// Minimal Error Boundary component for testing
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
+describe('CourseDetails Component', () => {
+  const mockAddToCart = jest.fn();
 
-  static getDerivedStateFromError(error) {
-    return { hasError: true };
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return <div>Error occurred</div>;
-    }
-
-    return this.props.children;
-  }
-}
-
-describe('CourseDetail component', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-  });
+    // Mock the useCart hook
+    useCart.mockReturnValue({
+      totalItems: 0,
+      addToCart: mockAddToCart,
+    });
 
-  test('fetches course data and renders course details', async () => {
-    const mockCourse = {
-      title: 'Test Course',
-      description: 'Test Description',
-      price: 100,
-      image: 'test-image-url',
-    };
+    // Mock Appwrite API to return correct data
+    databases.getDocument.mockResolvedValue({
+      $id: '1',  // Ensure $id is used for Appwrite's Document ID
+      title: 'Test Gift Card',  // Expected title
+      image: 'test-image.jpg',
+      price: 45,
+      description: 'Test description',
+    });
 
-    const mockCourseDetails = {
-      detailedDescription: 'Detailed course description',
-      learningPoints: ['Point 1', 'Point 2'],
-      rating: 4.5,
-      language: 'English',
-      videoLessons: 10,
-    };
-
-    useParams.mockReturnValue({ id: 'test-course-id' });
-
-    databases.getDocument.mockResolvedValue(mockCourse);
     databases.listDocuments.mockResolvedValue({
-      documents: [mockCourseDetails],
-    });
-
-    const { getByText, getByRole } = render(
-      <ErrorBoundary>
-        <CourseDetail />
-      </ErrorBoundary>
-    );
-
-    await waitFor(() => {
-      expect(databases.getDocument).toHaveBeenCalled();
-    });
-
-    await waitFor(() => {
-      expect(databases.listDocuments).toHaveBeenCalled();
-    });
-
-    expect(getByText('Test Course')).toBeInTheDocument();
-    expect(getByText('Test Description')).toBeInTheDocument();
-    expect(getByText('Price: $100')).toBeInTheDocument();
-    expect(getByRole('img')).toHaveAttribute('src', 'test-image-url');
-
-    expect(getByText('Detailed course description')).toBeInTheDocument();
-    expect(getByText('Point 1')).toBeInTheDocument();
-    expect(getByText('Point 2')).toBeInTheDocument();
-    expect(getByText('4.5 / 5')).toBeInTheDocument();
-    expect(getByText('English')).toBeInTheDocument();
-    expect(getByText('10 Video Lessons')).toBeInTheDocument();
-  });
-
-  test('renders loading state initially', async () => {
-    useParams.mockReturnValue({ id: 'test-course-id' });
-
-    await act(async () => {
-      const { getByText } = render(
-        <ErrorBoundary>
-          <CourseDetail />
-        </ErrorBoundary>
-      );
+      documents: [
+        { detailedDescription: 'Test detailed description', TermsOfUse: 'Test terms' },
+      ],
     });
   });
 
-  test('handles error when fetching data', async () => {
-    // Mock the useParams hook to return a specific ID
-    useParams.mockReturnValue({ id: 'test-course-id' });
+  test('renders loading state initially', () => {
+    render(
+      <Router>
+        <CourseDetails />
+      </Router>
+    );
+    expect(screen.getByText(/loading.../i)).toBeInTheDocument();
+  });
 
-    // Mock the Appwrite API to throw an error
-    databases.getDocument.mockRejectedValue(new Error('Fetch error'));
-    databases.listDocuments.mockRejectedValue(new Error('Fetch error'));
+  test('renders the gift card details', async () => {
 
-    // Suppress the error log for this test
-    // const originalError = console.error;
-    // console.error = jest.fn();
-
-    const { getByText } = render(
-      <ErrorBoundary>
-        <CourseDetail />
-      </ErrorBoundary>
+    databases.getDocument.mockResolvedValue({
+      $id: '1',
+      title: 'Test Gift Card',  // Use the actual title from your mock
+      image: 'test-image.jpg',
+      price: 45,
+      description: 'Test description',
+    });
+    render(
+      <Router>
+        <CourseDetails />
+      </Router>
     );
 
-    // Wait for the component to attempt fetching data
-    await waitFor(() => expect(databases.getDocument).toHaveBeenCalled());
+    // Wait for data to load
+    const title = await screen.findByText('Test Gift Card');
+    expect(title).toBeInTheDocument();
+    expect(screen.getByText('Test description')).toBeInTheDocument();
+    expect(screen.getByText('$45')).toBeInTheDocument();
+  });
 
-    // Ensure that listDocuments is not called since getDocument failed
-    expect(databases.listDocuments).not.toHaveBeenCalled();
 
-    // Check that the error state is handled appropriately
-    expect(getByText('Error loading course details. Please try again later.')).toBeInTheDocument();
 
-    // Restore original console.error
-    // console.error = originalError;
+  test('renders error message if API fails', async () => {
+    // Simulate API failure for getDocument
+    databases.getDocument.mockRejectedValueOnce(new Error('API Error'));
+
+    render(
+      <Router>
+        <CourseDetails />
+      </Router>
+    );
+
+    const errorMessage = await screen.findByText(/error loading gift card details/i);
+    expect(errorMessage).toBeInTheDocument();
   });
 });
+  test('renders error message if API fails', async () => {
+    // Simulate API failure
+    databases.getDocument.mockRejectedValueOnce(new Error('API Error'));
+
+    render(
+      <Router>
+        <CourseDetails />
+      </Router>
+    );
+
+    const errorMessage = await screen.findByText(/error loading gift card details/i);
+    expect(errorMessage).toBeInTheDocument();
+  });

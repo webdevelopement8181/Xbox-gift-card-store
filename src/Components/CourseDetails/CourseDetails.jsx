@@ -2,99 +2,131 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { databases, Query } from '../../appwrite';
 import './CourseDetails.css';
-import { FaDollarSign, FaStar, FaLanguage,  FaSignInAlt, FaVideo, FaDesktop, FaInfinity, FaCertificate, FaCheckCircle } from 'react-icons/fa';
-const CourseDetail = () => {
-    const { id } = useParams(); // Get the course ID from the URL parameters
-    const [course, setCourse] = useState(null);
-    const [courseDetails, setCourseDetails] = useState(null); // State for additional course details
+import { FaDollarSign, FaShoppingCart, FaHeart } from 'react-icons/fa';
+import { useCart } from '../Context/CartContext';
 
-    const [hasError, setHasError] = useState(false);
+const CourseDetails = () => {
+  const { id } = useParams();
+  const [giftCard, setGiftCard] = useState(null);
+  const [giftCardDetails, setGiftCardDetails] = useState(null);
+  const [hasError, setHasError] = useState(false);
+  const [quantity, setQuantity] = useState(1);
 
-    useEffect(() => {
-        const fetchCourseData = async () => {
-            try {
-                console.log("Fetching course data..."); // Debugging
-                const courseResponse = await databases.getDocument('66cde1b70007c60cbc12', "66cde1ce003c4c7dfb11", id);
-                console.log("Course data fetched", courseResponse); // Debugging
-                setCourse(courseResponse);
-    
-                const courseDetailsResponse = await databases.listDocuments(
-                    '66cde1b70007c60cbc12',
-                    '66cde5d000045bfa07ae',
-                    [Query.equal('coursrId', id)]
-                );
-                console.log("Course details fetched", courseDetailsResponse); // Debugging
-                if (courseDetailsResponse.documents.length > 0) {
-                    setCourseDetails(courseDetailsResponse.documents[0]);
-                }
-            } catch (error) {
-                console.error('Error fetching course data:', error);
-                setHasError(true);  // Update the error state
-            }
-            
-        };
-    
-        fetchCourseData();
-    }, [id]);
-    
-    
-    if (hasError) {
-        return <div>Error loading course details. Please try again later.</div>;
+  const { totalItems, addToCart } = useCart();
+
+  useEffect(() => {
+    const fetchGiftCardData = async () => {
+      try {
+        const giftCardResponse = await databases.getDocument(
+          '66cde1b70007c60cbc12', // Database ID
+          '66cde1ce003c4c7dfb11', // Collection ID
+          id
+        );
+        
+        // Ensure inSale and discountPercentage are part of the response
+        setGiftCard(giftCardResponse);
+
+        const giftCardDetailsResponse = await databases.listDocuments(
+          '66cde1b70007c60cbc12',
+          '66cde5d000045bfa07ae',
+          [Query.equal('coursrId', id)]
+        );
+        if (giftCardDetailsResponse.documents.length > 0) {
+          setGiftCardDetails(giftCardDetailsResponse.documents[0]);
+        }
+      } catch (error) {
+        console.error('Error fetching gift card data:', error);
+        setHasError(true);
+      }
+    };
+
+    fetchGiftCardData();
+  }, [id]);
+
+  // Calculate the discounted price if the item is on sale
+  const discountedPrice = giftCard?.inSale
+    ? (giftCard.price - (giftCard.price * giftCard.discountPercentage / 100)).toFixed(2)
+    : null;
+
+  const handleQuantityChange = (type) => {
+    if (type === 'increase') {
+      setQuantity(quantity + 1);
+    } else if (type === 'decrease' && quantity > 1) {
+      setQuantity(quantity - 1);
     }
+  };
 
-    if (!course) {
-        return <div>Loading...</div>;
+  const handleAddToCart = () => {
+    if (giftCard) {
+      addToCart(giftCard, quantity); // Pass product and selected quantity
     }
+  };
 
-    return (
-        <div className="course-detail">
-            <div className="course-detail-header">
-                <div className="course-info">
-                    {course && (
-                        <>
-                            <h1>{course.title}</h1>
-                            <p>{course.description}</p>
-                            <p><FaDollarSign /> Price: ${course.price}</p>
-                        </>
-                    )}
-                </div>
-                {course?.image && <img src={course.image} alt={course.title} className="course-images" />}
+  if (hasError) {
+    return <div>Error loading gift card details. Please try again later.</div>;
+  }
+
+  if (!giftCard) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div className="gift-card-detail-container">
+      <div className="line">
+        <div className="buy-icon-container">
+          <FaShoppingCart className="buy-icon" />
+          {totalItems > 0 && (
+            <div className="quantity-circle">
+              {totalItems} {/* Display total items in cart */}
             </div>
-    
-            {courseDetails && (
-                <div className="course-details-section">
-                    <h2>About This Course</h2>
-                    <p>{courseDetails.detailedDescription}</p>
-    
-                    <h3>What You Will Learn</h3>
-                    <ul>
-                        {courseDetails.learningPoints && courseDetails.learningPoints.map((point, index) => (
-                            <li key={index}><FaCheckCircle /> {point}</li>
-                        ))}
-                    </ul>
-    
-                    <h3><FaStar /> Rating</h3>
-                    <p>{courseDetails.rating} / 5</p>
-    
-                    <h3><FaLanguage /> Language</h3>
-                    <p>{courseDetails.language}</p>
-    
-                    <div className="cta-section">
-                        <button className="join-course-btn"><FaSignInAlt /> Join Course</button>
-                        <div className="course-includes">
-                            <h4><FaVideo /> This Course Includes</h4>
-                            <ul>
-                                <li><FaVideo /> {courseDetails.videoLessons} Video Lessons</li>
-                                <li><FaDesktop /> Access on desktop, tablet, and mobile</li>
-                                <li><FaInfinity /> Full Lifetime Access</li>
-                                <li><FaCertificate /> Certificate of Completion</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            )}
+          )}
         </div>
-    );
-}    
+      </div>
 
-export default CourseDetail;
+      <div className="gift-card-image-section">
+        {giftCard?.image && <img src={giftCard.image} alt={giftCard.title} className="gift-card-image" />}
+      </div>
+
+      <div className="gift-card-info-section">
+        <h1>{giftCard.title}</h1>
+        <p>{giftCard.description}</p>
+        <p>{giftCardDetails?.detailedDescription}</p>
+
+        <p className="price">
+          <FaDollarSign />
+          {giftCard.inSale ? (
+            <>
+           
+              <span className="discounted-price">${discountedPrice}</span> Discounted price
+            </>
+          ) : (
+            <span className="price-value">${giftCard.price}</span> // Regular price if not on sale
+          )}
+        </p>
+
+        <h3>Quantity</h3>
+        <div className="quantity-selector">
+          <button onClick={() => handleQuantityChange('decrease')}>-</button>
+          <span>{quantity}</span>
+          <button onClick={() => handleQuantityChange('increase')}>+</button>
+        </div>
+
+        <div className="gift-card-details-section">
+          <h4>Terms of Use</h4>
+          <p>{giftCardDetails?.TermsOfUse}</p>
+        </div>
+
+        <div className="action-buttons">
+          <button className="add-to-cart-btn" onClick={handleAddToCart}>
+            <FaShoppingCart /> Add to Cart
+          </button>
+          <button className="add-to-wishlist-btn">
+            <FaHeart /> Add to Wishlist
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CourseDetails;

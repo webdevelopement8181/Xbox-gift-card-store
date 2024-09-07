@@ -13,7 +13,6 @@ const Pagination = ({ productsPerPage, totalProducts, paginate, currentPage }) =
     <nav>
        
       <ul className="pagination">
-      <div>this is the pagination!</div>
         {currentPage > 1 && (
           <li>
             <button onClick={() => paginate(currentPage - 1)}>Previous</button>
