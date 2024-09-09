@@ -4,6 +4,7 @@ import { databases, Query } from '../../appwrite';
 import './CourseDetails.css';
 import { FaDollarSign, FaShoppingCart, FaHeart } from 'react-icons/fa';
 import { useCart } from '../Context/CartContext';
+import DiscountCodeInput from '../DiscountInput';
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -123,6 +124,7 @@ const CourseDetails = () => {
           <button className="add-to-wishlist-btn">
             <FaHeart /> Add to Wishlist
           </button>
+          <DiscountCodeInput/>
         </div>
       </div>
     </div>
