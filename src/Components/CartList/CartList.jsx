@@ -1,13 +1,15 @@
 import React from 'react';
 import { useCart } from '../Context/CartContext';
 import { FaTrash } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom'; 
 import DiscountCodeInput from '../DiscountInput/DiscountInput';
 
 import './CartList.css';
 
 const CartList = () => {
   const { cartItems, updateQuantity, removeFromCart, calculateDiscountedPrice, discountedPrice } = useCart();  // Use discountedPrice from context
-
+  const navigate = useNavigate();
+  
   // Handle quantity change
   const handleQuantityChange = (id, newQuantity) => {
     if (newQuantity > 0) {
@@ -23,7 +25,10 @@ const CartList = () => {
   if (cartItems.length === 0) {
     return <div>Your cart is empty.</div>;
   }
-
+  // Redirect to payment page
+  const handleProceedToCheckout = () => {
+    navigate('/payment');  // Redirect to the payment page
+  };
   return (
     <div className="cart-container">
       <h1>Shopping Cart</h1>
@@ -88,9 +93,11 @@ const CartList = () => {
         </h2>
       
         <DiscountCodeInput/>
-        <hr></hr>
-        <button className="checkout-btn">Proceed to Checkout</button>
-      </div>
+       
+        <button className="checkout-btn" onClick={handleProceedToCheckout}>  {/* Use onClick for redirection */}
+          Proceed to Checkout
+        </button>
+        </div>
     </div>
   );
 };

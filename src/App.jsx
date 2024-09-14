@@ -19,6 +19,7 @@ import DocumentFormDetail from './Components/Dashboard/DocumentFormDetail';
 import AdminRoute from './Components/Dashboard/AdminRoute';
 import CartList from './Components/CartList/CartList';
 import { CartProvider } from './Components/Context/CartContext';
+import PaymentPage from './Components/PaymentPage/PaymentPage';
 
 
 function App() {
@@ -99,6 +100,7 @@ function App() {
           element={isAuthenticated ? <Contact /> : <Navigate to="/login" />} 
         />
            <Route path="/cart" element={<CartList />} />
+           <Route path="/payment" element={<PaymentPage />} />
       </Routes>
     </Router>
     </CartProvider>
