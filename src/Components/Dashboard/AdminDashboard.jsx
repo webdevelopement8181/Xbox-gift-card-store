@@ -49,6 +49,10 @@ const AdminDashboard = () => {
                             <PeopleIcon style={{ color: '#fff', marginBottom: '20px', marginRight: open ? '20px' : '0' }} />
                             {open && <ListItemText primary="Manage Course Details" />}
                         </ListItem>
+                        <ListItem button component={Link} to="/admin/transaction">
+                            <PeopleIcon style={{ color: '#fff', marginBottom: '20px', marginRight: open ? '20px' : '0' }} />
+                            {open && <ListItemText primary="Recent Transactions" />}
+                        </ListItem>
                     </List>
                 </Drawer>
                 </div>

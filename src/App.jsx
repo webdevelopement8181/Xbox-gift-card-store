@@ -20,6 +20,7 @@ import AdminRoute from './Components/Dashboard/AdminRoute';
 import CartList from './Components/CartList/CartList';
 import { CartProvider } from './Components/Context/CartContext';
 import PaymentPage from './Components/PaymentPage/PaymentPage';
+import TransactionReview from './Components/Dashboard/Transactions/TransactionReview';
 
 
 function App() {
@@ -59,8 +60,10 @@ function App() {
         <Route path="/course/:id" element={<CourseDetails />} />
         <Route path="/admin/*" element={<AdminRoute />}>
           <Route path="*" element={<AdminDashboard />}>
+          <Route path="transaction" element={<TransactionReview collectionName="PaymentData" />} />
             <Route path="" element={<ChartDashboard />} />
             <Route path="courses" element={<CourseList collectionName="onlineCourse" />} />
+            
             <Route path="course-details" element={<CourseListDetail collectionName="courseDetails" />} />
             <Route path="courses/create" element={<DocumentForm collectionName="onlineCourse" />} />
             <Route path="courses/edit/:id" element={<DocumentForm collectionName="onlineCourse" />} />
