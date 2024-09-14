@@ -1,4 +1,4 @@
-import { Client, Account, Databases, OAuthProvider, Query, ID } from 'appwrite';
+import { Client, Account, Databases, OAuthProvider, Query, ID, Functions } from 'appwrite';
 
 // Initialize the Appwrite client
 const client = new Client();
@@ -9,15 +9,16 @@ client
 
 const account = new Account(client);
 const databases = new Databases(client);
+const functions = new Functions(client); // Initialize Functions for serverless execution
 
 // Add limit and offset as parameters to the function for pagination
 export const fetchProducts = async (minPrice, maxPrice, Category, newest = false, limit = 10, offset = 0) => {
   try {
     const queries = [
-      Query.greaterThanEqual('price', minPrice),  // Filter products with price >= minPrice
-      Query.lessThanEqual('price', maxPrice),     // Filter products with price <= maxPrice
-      Query.limit(limit),                         // Pagination: limit the number of products per page
-      Query.offset(offset)                        // Pagination: skip the first 'offset' products
+      Query.greaterThanEqual('price', minPrice),  
+      Query.lessThanEqual('price', maxPrice),     
+      Query.limit(limit),                         
+      Query.offset(offset)                        
     ];
 
     if (Category) {
@@ -42,4 +43,20 @@ export const fetchProducts = async (minPrice, maxPrice, Category, newest = false
   }
 };
 
-export { account, databases, OAuthProvider, Query, ID };
+
+export const fetchFunctionData = async (code, price) => {
+  try {
+    // Pass both the discount code and the total price from the cart
+    const response = await functions.createExecution('66df1f8400179e0d7260', JSON.stringify({ code, price }));
+
+    const responseBody = JSON.parse(response.responseBody);
+    console.log('Parsed Response Body: ', responseBody);
+    return responseBody;
+  } catch (err) {
+    console.error('Error:', err.message || err);
+    throw new Error('Failed to validate discount code.');
+  }
+};
+
+
+export { account, databases, functions, OAuthProvider, Query, ID };

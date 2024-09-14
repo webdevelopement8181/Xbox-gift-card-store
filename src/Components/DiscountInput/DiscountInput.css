@@ -1,0 +1,80 @@
+/* Container for the discount component */
+.discount-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Heading for the form */
+  .discount-heading {
+    text-align: center;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Form styling */
+  .discount-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Input field styling */
+  .discount-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  /* Button styling */
+  .discount-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .discount-button:hover {
+    background-color: #218838;
+  }
+  
+  /* Message styling */
+  .discount-message {
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  /* Success message styling */
+  .discount-message.success {
+    color: #28a745;
+  }
+  
+  /* Error message styling */
+  .discount-message.error {
+    color: #dc3545;
+  }
+  
+  /* Discounted price styling */
+  .discounted-price {
+
+    font-size: 18px;
+    color: #333;
+    margin-top: 10px;
+    text-align: center;
+  }
+  

@@ -1,23 +1,23 @@
 import React from 'react';
 import { useCart } from '../Context/CartContext';
 import { FaTrash } from 'react-icons/fa';
-import './CartList.css'; // Assuming you have CSS for styling
+import DiscountCodeInput from '../DiscountInput/DiscountInput';
+
+import './CartList.css';
 
 const CartList = () => {
-  const { cartItems, updateQuantity, removeFromCart } = useCart();
+  const { cartItems, updateQuantity, removeFromCart, calculateDiscountedPrice, discountedPrice } = useCart();  // Use discountedPrice from context
 
   // Handle quantity change
   const handleQuantityChange = (id, newQuantity) => {
-    console.log('Quantity Change for id:', id); // Log the id for quantity change
     if (newQuantity > 0) {
-      updateQuantity(id, newQuantity); // Use product id to update the quantity
+      updateQuantity(id, newQuantity);
     }
   };
 
   // Handle product removal
   const handleRemove = (id) => {
-    console.log('Removing item with id:', id); // Log the id to check if it's defined
-    removeFromCart(id); // Use product id to remove the item
+    removeFromCart(id);
   };
 
   if (cartItems.length === 0) {
@@ -32,10 +32,8 @@ const CartList = () => {
       ) : (
         <ul className="cart-items">
           {cartItems.map((item) => {
-            // Calculate discounted price if the item is on sale
-            const discountedPrice = item.inSale
-              ? (item.price - (item.price * item.discountPercentage / 100)).toFixed(2)
-              : item.price;
+            // Use calculateDiscountedPrice from context to get the discounted price
+            const discountedPrice = calculateDiscountedPrice(item);
 
             return (
               <li key={item.id} className="cart-item">
@@ -46,11 +44,11 @@ const CartList = () => {
                   {/* Display discounted price if the item is on sale */}
                   {item.inSale ? (
                     <p className="cart-item-price">
-                      <span className="original-price">${item.price}</span> {/* Original price with strikethrough */}
-                      <span className="discounted-price">${discountedPrice}</span> {/* Discounted price */}
+                      <span className="original-price">${item.price}</span>
+                      <span className="discounted-price">${discountedPrice}</span>
                     </p>
                   ) : (
-                    <p className="cart-item-price">${item.price}</p> // Regular price
+                    <p className="cart-item-price">${item.price}</p>
                   )}
 
                   <div className="cart-item-quantity">
@@ -71,7 +69,7 @@ const CartList = () => {
                 </div>
                 <button
                   className="cart-item-remove-btn"
-                  onClick={() => handleRemove(item.id)} // Pass the product id to handleRemove
+                  onClick={() => handleRemove(item.id)}
                 >
                   <FaTrash size={24} />
                 </button>
@@ -82,15 +80,15 @@ const CartList = () => {
       )}
 
       <div className="cart-summary">
-        {/* Calculate the total, considering discounted prices if applicable */}
         <h2>
-          Total: ${cartItems.reduce((total, item) => {
-            const itemPrice = item.inSale
-              ? item.price - (item.price * item.discountPercentage / 100)
-              : item.price;
+          Total: ${discountedPrice ? discountedPrice : cartItems.reduce((total, item) => {
+            const itemPrice = calculateDiscountedPrice(item);  // Use calculateDiscountedPrice here
             return total + itemPrice * item.quantity;
           }, 0).toFixed(2)}
         </h2>
+      
+        <DiscountCodeInput/>
+        <hr></hr>
         <button className="checkout-btn">Proceed to Checkout</button>
       </div>
     </div>

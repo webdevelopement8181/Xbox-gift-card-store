@@ -4,7 +4,6 @@ import { databases, Query } from '../../appwrite';
 import './CourseDetails.css';
 import { FaDollarSign, FaShoppingCart, FaHeart } from 'react-icons/fa';
 import { useCart } from '../Context/CartContext';
-import DiscountCodeInput from '../DiscountInput';
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -13,7 +12,7 @@ const CourseDetails = () => {
   const [hasError, setHasError] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
-  const { totalItems, addToCart } = useCart();
+  const { totalItems, addToCart, calculateDiscountedPrice } = useCart();  // Use calculateDiscountedPrice from context
 
   useEffect(() => {
     const fetchGiftCardData = async () => {
@@ -44,10 +43,8 @@ const CourseDetails = () => {
     fetchGiftCardData();
   }, [id]);
 
-  // Calculate the discounted price if the item is on sale
-  const discountedPrice = giftCard?.inSale
-    ? (giftCard.price - (giftCard.price * giftCard.discountPercentage / 100)).toFixed(2)
-    : null;
+  // Only call calculateDiscountedPrice if giftCard is not null
+  const discountedPrice = giftCard ? calculateDiscountedPrice(giftCard) : null;
 
   const handleQuantityChange = (type) => {
     if (type === 'increase') {
@@ -97,7 +94,6 @@ const CourseDetails = () => {
           <FaDollarSign />
           {giftCard.inSale ? (
             <>
-           
               <span className="discounted-price">${discountedPrice}</span> Discounted price
             </>
           ) : (
@@ -124,7 +120,6 @@ const CourseDetails = () => {
           <button className="add-to-wishlist-btn">
             <FaHeart /> Add to Wishlist
           </button>
-          <DiscountCodeInput/>
         </div>
       </div>
     </div>
