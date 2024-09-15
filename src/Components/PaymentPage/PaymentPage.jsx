@@ -74,8 +74,9 @@ const UserForm = () => {
     <div>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Name:</label>  
+          <label htmlFor="name">Name:</label>  
           <input
+            id="name"
             type="text"
             name="Name"
             value={formData.Name}
@@ -85,8 +86,9 @@ const UserForm = () => {
         </div>
 
         <div>
-          <label>Last Name:</label>
+          <label htmlFor="familyName"> Family Name:</label>
           <input
+            id="familyName"
             type="text"
             name="FamilyName"
             value={formData.FamilyName}
@@ -96,8 +98,9 @@ const UserForm = () => {
         </div>
 
         <div>
-          <label>Email:</label>
+          <label htmlFor="email">Email:</label>
           <input
+            id="email"
             type="email"
             name="Email"
             value={formData.Email}
@@ -107,8 +110,9 @@ const UserForm = () => {
         </div>
 
         <div>
-          <label>Phone:</label>
+          <label htmlFor="phone">Phone:</label>
           <input
+            id="phone"
             type="text"
             name="Phone"
             value={formData.Phone}

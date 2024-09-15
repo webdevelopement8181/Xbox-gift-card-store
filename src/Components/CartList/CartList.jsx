@@ -6,10 +6,10 @@ import DiscountCodeInput from '../DiscountInput/DiscountInput';
 
 import './CartList.css';
 
-const CartList = () => {
-  const { cartItems, updateQuantity, removeFromCart, calculateDiscountedPrice, discountedPrice } = useCart();  // Use discountedPrice from context
+const CartList = ({ isAuthenticated }) => {  // Pass isAuthenticated as a prop
+  const { cartItems, updateQuantity, removeFromCart, calculateDiscountedPrice } = useCart();
   const navigate = useNavigate();
-  
+
   // Handle quantity change
   const handleQuantityChange = (id, newQuantity) => {
     if (newQuantity > 0) {
@@ -25,10 +25,16 @@ const CartList = () => {
   if (cartItems.length === 0) {
     return <div>Your cart is empty.</div>;
   }
-  // Redirect to payment page
+
+  // Redirect to payment page or login if not authenticated
   const handleProceedToCheckout = () => {
-    navigate('/payment');  // Redirect to the payment page
+    if (!isAuthenticated) {
+      navigate('/login');  // Redirect to login if not authenticated
+    } else {
+      navigate('/payment');  // Redirect to payment page if authenticated
+    }
   };
+
   return (
     <div className="cart-container">
       <h1>Shopping Cart</h1>
@@ -37,7 +43,6 @@ const CartList = () => {
       ) : (
         <ul className="cart-items">
           {cartItems.map((item) => {
-            // Use calculateDiscountedPrice from context to get the discounted price
             const discountedPrice = calculateDiscountedPrice(item);
 
             return (
@@ -87,7 +92,7 @@ const CartList = () => {
 
       <div className="cart-summary">
         <h2>
-          Total: ${discountedPrice ? discountedPrice : cartItems.reduce((total, item) => {
+          Total: ${cartItems.reduce((total, item) => {
             const itemPrice = calculateDiscountedPrice(item);  // Use calculateDiscountedPrice here
             return total + itemPrice * item.quantity;
           }, 0).toFixed(2)}
@@ -98,7 +103,7 @@ const CartList = () => {
         <button className="checkout-btn" onClick={handleProceedToCheckout}>  {/* Use onClick for redirection */}
           Proceed to Checkout
         </button>
-        </div>
+      </div>
     </div>
   );
 };

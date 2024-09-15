@@ -27,15 +27,11 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    console.log('App component mounted');
     const checkAuth = async () => {
       try {
-        console.log('Checking authentication...');
         const accountSession = await account.get(); // Try to fetch the current session
-        console.log('Session found:', accountSession);
         setIsAuthenticated(true);
       } catch (error) {
-        console.error('No active session found, user is not authenticated:', error);
         setIsAuthenticated(false); // No active session, user is a guest
       }
     };
@@ -54,61 +50,53 @@ function App() {
 
   return (
     <CartProvider>
-    <Router>
-      <Routes>
-        <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
-        <Route path="/course/:id" element={<CourseDetails />} />
-        <Route path="/admin/*" element={<AdminRoute />}>
-          <Route path="*" element={<AdminDashboard />}>
-          <Route path="transaction" element={<TransactionReview collectionName="PaymentData" />} />
-            <Route path="" element={<ChartDashboard />} />
-            <Route path="courses" element={<CourseList collectionName="onlineCourse" />} />
-            
-            <Route path="course-details" element={<CourseListDetail collectionName="courseDetails" />} />
-            <Route path="courses/create" element={<DocumentForm collectionName="onlineCourse" />} />
-            <Route path="courses/edit/:id" element={<DocumentForm collectionName="onlineCourse" />} />
-            <Route path="course-details/edit/:id" element={<DocumentFormDetail />} />
-         
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+          <Route path="/course/:id" element={<CourseDetails />} />
+          <Route path="/admin/*" element={<AdminRoute />}>
+            <Route path="*" element={<AdminDashboard />}>
+              <Route path="transaction" element={<TransactionReview collectionName="PaymentData" />} />
+              <Route path="" element={<ChartDashboard />} />
+              <Route path="courses" element={<CourseList collectionName="onlineCourse" />} />
+              <Route path="course-details" element={<CourseListDetail collectionName="courseDetails" />} />
+              <Route path="courses/create" element={<DocumentForm collectionName="onlineCourse" />} />
+              <Route path="courses/edit/:id" element={<DocumentForm collectionName="onlineCourse" />} />
+              <Route path="course-details/edit/:id" element={<DocumentFormDetail />} />
+            </Route>
           </Route>
-        </Route>
 
-        {/* Home Route with Navbar and Hero */}
-        <Route 
-          path="/" 
-          element={
-            <>
-              <Navbar 
-                isAuthenticated={isAuthenticated} 
-                setIsAuthenticated={setIsAuthenticated} 
-                handleLogout={handleLogout} 
-              />
-              <Hero />
-              <Home />
-              
-            </>
-          } 
-        />
+          {/* Home Route with Navbar and Hero */}
+          <Route 
+            path="/" 
+            element={
+              <>
+                <Navbar 
+                  isAuthenticated={isAuthenticated} 
+                  setIsAuthenticated={setIsAuthenticated} 
+                  handleLogout={handleLogout} 
+                />
+                <Hero />
+                <Home />
+              </>
+            } 
+          />
 
-        {/* Other Routes without Navbar and Hero */}
-        <Route 
-          path="/products" 
-          element={isAuthenticated ? <Products /> : <Navigate to="/login" />} 
-        />
-        <Route 
-          path="/about" 
-          element={isAuthenticated ? <About /> : <Navigate to="/login" />} 
-        />
-        <Route 
-          path="/contact" 
-          element={isAuthenticated ? <Contact /> : <Navigate to="/login" />} 
-        />
-           <Route path="/cart" element={<CartList />} />
-           <Route path="/payment" element={<PaymentPage />} />
-      </Routes>
-    </Router>
+          {/* Other Routes accessible without authentication */}
+          <Route path="/products" element={<Products />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/cart" element={<CartList isAuthenticated={isAuthenticated} />} />
+
+          {/* Protect the payment route */}
+          <Route 
+            path="/payment" 
+            element={isAuthenticated ? <PaymentPage /> : <Navigate to="/login" />} 
+          />
+        </Routes>
+      </Router>
     </CartProvider>
   );
 }
-
 
 export default App;

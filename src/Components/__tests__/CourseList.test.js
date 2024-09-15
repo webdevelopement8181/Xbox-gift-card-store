@@ -14,12 +14,10 @@ jest.mock('react-router-dom', () => ({
 
 describe('CartList Component', () => {
   beforeEach(() => {
-    // Reset mocks before each test
     mockNavigate.mockReset();
   });
 
   test('renders empty cart message when there are no items', () => {
-    // Mock the useCart hook to return an empty cart
     useCart.mockReturnValue({
       cartItems: [],
       calculateDiscountedPrice: jest.fn(),
@@ -27,16 +25,14 @@ describe('CartList Component', () => {
 
     render(
       <BrowserRouter>
-        <CartList />
+        <CartList isAuthenticated={false} />  {/* Pass isAuthenticated as false */}
       </BrowserRouter>
     );
 
-    // Expect to see the empty cart message
     expect(screen.getByText('Your cart is empty.')).toBeInTheDocument();
   });
 
   test('renders cart items and calculates total price', () => {
-    // Mock the useCart hook with sample cart items
     useCart.mockReturnValue({
       cartItems: [
         { id: 1, title: 'Product 1', price: 100, quantity: 1, inSale: false },
@@ -47,16 +43,13 @@ describe('CartList Component', () => {
 
     render(
       <BrowserRouter>
-        <CartList />
+        <CartList isAuthenticated={true} />  {/* Pass isAuthenticated as true */}
       </BrowserRouter>
     );
 
-    // Expect the cart items to be rendered
     expect(screen.getByText('Product 1')).toBeInTheDocument();
     expect(screen.getByText('Product 2')).toBeInTheDocument();
-
-    // Expect the total price to be calculated correctly (100 + (200 * 0.9 * 2) = 460)
-    expect(screen.getByText('Total: $460.00')).toBeInTheDocument();
+    expect(screen.getByText('Total: $460.00')).toBeInTheDocument();  // Validate total
   });
 
   test('handles quantity change for cart items', () => {
@@ -69,15 +62,13 @@ describe('CartList Component', () => {
 
     render(
       <BrowserRouter>
-        <CartList />
+        <CartList isAuthenticated={true} />
       </BrowserRouter>
     );
 
-    // Simulate clicking the "+" button to increase quantity
     const increaseButton = screen.getByText('+');
     fireEvent.click(increaseButton);
 
-    // Expect the mock updateQuantity function to be called
     expect(mockUpdateQuantity).toHaveBeenCalledWith(1, 2);
   });
 
@@ -91,19 +82,17 @@ describe('CartList Component', () => {
 
     render(
       <BrowserRouter>
-        <CartList />
+        <CartList isAuthenticated={true} />
       </BrowserRouter>
     );
 
-    // Simulate clicking the trash icon to remove the item
     const removeButton = screen.getByRole('button', { name: /remove/i });
     fireEvent.click(removeButton);
 
-    // Expect the mock removeFromCart function to be called
     expect(mockRemoveFromCart).toHaveBeenCalledWith(1);
   });
 
-  test('navigates to payment page on proceed to checkout', () => {
+  test('navigates to login page if user is not authenticated when trying to checkout', () => {
     useCart.mockReturnValue({
       cartItems: [{ id: 1, title: 'Product 1', price: 100, quantity: 1 }],
       calculateDiscountedPrice: (item) => item.price,
@@ -111,15 +100,31 @@ describe('CartList Component', () => {
 
     render(
       <BrowserRouter>
-        <CartList />
+        <CartList isAuthenticated={false} />  {/* Pass isAuthenticated as false */}
       </BrowserRouter>
     );
 
-    // Simulate clicking the "Proceed to Checkout" button
     const checkoutButton = screen.getByText('Proceed to Checkout');
     fireEvent.click(checkoutButton);
 
-    // Expect the mock navigate function to be called with '/payment'
-    expect(mockNavigate).toHaveBeenCalledWith('/payment');
+    expect(mockNavigate).toHaveBeenCalledWith('/login');  // Should navigate to login page
+  });
+
+  test('navigates to payment page if user is authenticated when trying to checkout', () => {
+    useCart.mockReturnValue({
+      cartItems: [{ id: 1, title: 'Product 1', price: 100, quantity: 1 }],
+      calculateDiscountedPrice: (item) => item.price,
+    });
+
+    render(
+      <BrowserRouter>
+        <CartList isAuthenticated={true} />  {/* Pass isAuthenticated as true */}
+      </BrowserRouter>
+    );
+
+    const checkoutButton = screen.getByText('Proceed to Checkout');
+    fireEvent.click(checkoutButton);
+
+    expect(mockNavigate).toHaveBeenCalledWith('/payment');  // Should navigate to payment page
   });
 });
