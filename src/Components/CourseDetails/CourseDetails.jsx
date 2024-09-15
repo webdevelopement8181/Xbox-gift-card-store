@@ -12,7 +12,7 @@ const CourseDetails = () => {
   const [hasError, setHasError] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
-  const { totalItems, addToCart, calculateDiscountedPrice } = useCart();  // Use calculateDiscountedPrice from context
+  const { totalItems, addToCart, calculateDiscountedPrice } = useCart();  
 
   useEffect(() => {
     const fetchGiftCardData = async () => {

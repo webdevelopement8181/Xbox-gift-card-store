@@ -75,6 +75,7 @@ const CartList = () => {
                 <button
                   className="cart-item-remove-btn"
                   onClick={() => handleRemove(item.id)}
+                  aria-label="Remove item"  // Add aria-label here
                 >
                   <FaTrash size={24} />
                 </button>
