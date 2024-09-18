@@ -88,8 +88,8 @@ const Navbar = ({ isAuthenticated, handleLogout }) => {
             sx={{ color: '#1a1a1a', fontSize: '0.875rem' }}
             onClick={handleLoginClick}
           >
-            <AccountCircle />
-            <span style={{ fontSize: '0.875rem', marginRight: '15px' }}>Profile</span>
+           
+            <span style={{ fontSize: '0.875rem', marginRight: '15px' }}>LogIn/SignUp</span>
           </IconButton>
         ) : (
           <Button
@@ -104,10 +104,11 @@ const Navbar = ({ isAuthenticated, handleLogout }) => {
         {/* Language Button */}
         <Button
           color="inherit"
-          startIcon={<LanguageIcon />}
+          startIcon={<AccountCircle />}
           sx={{ textTransform: 'none', backgroundColor: '#675D50', color: 'white', padding: '6px 12px', borderRadius: '10px' }}
+          onClick={() => navigate('/userpanel')}  // Navigate to /userpanel
         >
-          English
+          User Panel
         </Button>
       </Toolbar>
     </AppBar>

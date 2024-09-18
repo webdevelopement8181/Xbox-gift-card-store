@@ -27,6 +27,9 @@ const DiscountComponent = () => {
       if (response.success) {
         setDiscountedPrice(response.discountedPrice);  // Set discounted price in the context
         setMessage(response.message); 
+        
+        // Log the discounted price for debugging
+        console.log('Discounted Price (after applying discount):', response.discountedPrice);  // For debugging
       } else {
         setMessage(response.message);  
       }

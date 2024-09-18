@@ -21,18 +21,22 @@ import CartList from './Components/CartList/CartList';
 import { CartProvider } from './Components/Context/CartContext';
 import PaymentPage from './Components/PaymentPage/PaymentPage';
 import TransactionReview from './Components/Dashboard/Transactions/TransactionReview';
+import UserPanel from './Components/UserPanel/UserPanel'
 
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const accountSession = await account.get(); // Try to fetch the current session
+        const accountSession = await account.get(); 
         setIsAuthenticated(true);
+        setUserInfo(accountSession); 
       } catch (error) {
-        setIsAuthenticated(false); // No active session, user is a guest
+        setIsAuthenticated(false);
+        setUserInfo(null); 
       }
     };
     checkAuth();
@@ -40,7 +44,7 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      await account.deleteSession('current'); // End the current session
+      await account.deleteSession('current'); 
       setIsAuthenticated(false);
       alert("You have been logged out.");
     } catch (error) {
@@ -52,8 +56,8 @@ function App() {
     <CartProvider>
       <Router>
         <Routes>
-          <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
-          <Route path="/course/:id" element={<CourseDetails />} />
+        <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} setUserInfo={setUserInfo}  />} />       
+           <Route path="/course/:id" element={<CourseDetails />} />
           <Route path="/admin/*" element={<AdminRoute />}>
             <Route path="*" element={<AdminDashboard />}>
               <Route path="transaction" element={<TransactionReview collectionName="PaymentData" />} />
@@ -87,6 +91,8 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<CartList isAuthenticated={isAuthenticated} />} />
+          <Route path="/userpanel" element={<UserPanel user={userInfo}/>} />
+
 
           {/* Protect the payment route */}
           <Route 

@@ -6,8 +6,8 @@ import DiscountCodeInput from '../DiscountInput/DiscountInput';
 
 import './CartList.css';
 
-const CartList = ({ isAuthenticated }) => {  // Pass isAuthenticated as a prop
-  const { cartItems, updateQuantity, removeFromCart, calculateDiscountedPrice } = useCart();
+const CartList = ({ isAuthenticated }) => {  
+  const { cartItems, updateQuantity, removeFromCart, calculateDiscountedPrice, discountedPrice } = useCart();
   const navigate = useNavigate();
 
   // Handle quantity change
@@ -35,6 +35,14 @@ const CartList = ({ isAuthenticated }) => {  // Pass isAuthenticated as a prop
     }
   };
 
+  // Calculate the total price, and use the discounted price if it exists
+  const totalPrice = discountedPrice !== null 
+    ? discountedPrice // Use the discounted price if it has been applied
+    : cartItems.reduce((total, item) => {
+        const itemPrice = calculateDiscountedPrice(item);
+        return total + itemPrice * item.quantity;
+      }, 0).toFixed(2); // Otherwise, calculate the total price without any discounts
+
   return (
     <div className="cart-container">
       <h1>Shopping Cart</h1>
@@ -43,7 +51,7 @@ const CartList = ({ isAuthenticated }) => {  // Pass isAuthenticated as a prop
       ) : (
         <ul className="cart-items">
           {cartItems.map((item) => {
-            const discountedPrice = calculateDiscountedPrice(item);
+            const discountedItemPrice = calculateDiscountedPrice(item);
 
             return (
               <li key={item.id} className="cart-item">
@@ -55,7 +63,7 @@ const CartList = ({ isAuthenticated }) => {  // Pass isAuthenticated as a prop
                   {item.inSale ? (
                     <p className="cart-item-price">
                       <span className="original-price">${item.price}</span>
-                      <span className="discounted-price">${discountedPrice}</span>
+                      <span className="discounted-price">${discountedItemPrice}</span>
                     </p>
                   ) : (
                     <p className="cart-item-price">${item.price}</p>
@@ -80,7 +88,7 @@ const CartList = ({ isAuthenticated }) => {  // Pass isAuthenticated as a prop
                 <button
                   className="cart-item-remove-btn"
                   onClick={() => handleRemove(item.id)}
-                  aria-label="Remove item"  // Add aria-label here
+                  aria-label="Remove item"
                 >
                   <FaTrash size={24} />
                 </button>
@@ -92,15 +100,12 @@ const CartList = ({ isAuthenticated }) => {  // Pass isAuthenticated as a prop
 
       <div className="cart-summary">
         <h2>
-          Total: ${cartItems.reduce((total, item) => {
-            const itemPrice = calculateDiscountedPrice(item);  // Use calculateDiscountedPrice here
-            return total + itemPrice * item.quantity;
-          }, 0).toFixed(2)}
+          Total: ${totalPrice}  {/* Show discounted price if applied, else normal total */}
         </h2>
       
-        <DiscountCodeInput/>
+        <DiscountCodeInput />
        
-        <button className="checkout-btn" onClick={handleProceedToCheckout}>  {/* Use onClick for redirection */}
+        <button className="checkout-btn" onClick={handleProceedToCheckout}>  
           Proceed to Checkout
         </button>
       </div>

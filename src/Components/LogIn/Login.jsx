@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from 'prop-types';
 import './Login.css'; 
 
-const Login = ({ setIsAuthenticated }) => {
+const Login = ({ setIsAuthenticated , setUserInfo }) => {
     const [user, setUser] = useState(null);
     const [name, setName] = useState(""); // State to store the user's name
     const [email, setEmail] = useState("");
@@ -21,6 +21,7 @@ const Login = ({ setIsAuthenticated }) => {
             try {
                 const accountUser = await account.get();
                 setUser(accountUser);
+                setUserInfo(accountUser);
                 navigate("/"); // Redirect to home if logged in
             } catch (error) {
                 console.log("User not authenticated", error);
@@ -111,7 +112,8 @@ const Login = ({ setIsAuthenticated }) => {
 };
 
 Login.propTypes = {
-  setIsAuthenticated: PropTypes.func.isRequired,  // setIsAuthenticated must be a function and is required
+  setIsAuthenticated: PropTypes.func.isRequired,  
+  setUserInfo: PropTypes.func.isRequired,
 };
 
 export default Login;
