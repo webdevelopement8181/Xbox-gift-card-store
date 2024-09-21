@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { submitPayment, fetchPaymentStatus } from '../../appwrite';  
+import { useLocation, useNavigate } from 'react-router-dom';  // Import useNavigate
+import { submitPayment, fetchPaymentStatus } from '../../appwrite';  // Removed savePaymentProducts
 
 const UserForm = () => {
+  const location = useLocation();  
+  const navigate = useNavigate();  // Initialize useNavigate
+  const { userId, selectedProducts } = location.state || {};  
+
   const [formData, setFormData] = useState({
     Name: '',  
     FamilyName: '',
@@ -26,13 +31,20 @@ const UserForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Convert selectedProducts array to JSON string before saving it
+      const productsAsString = JSON.stringify(selectedProducts);
+
+      // Include userId and productsAsString (JSON string) in the payment submission
       const newPaymentId = await submitPayment({
+        user_id: userId,  
         Name: formData.Name,  
         FamilyName: formData.FamilyName,
         Email: formData.Email,
         Phone: formData.Phone,
-        PaymentStatus: 'pending' 
+        PaymentStatus: 'pending',
+        productList: productsAsString  // Store the selectedProducts as a JSON string
       });
+      
       console.log('New Payment ID:', newPaymentId); 
       setPaymentId(newPaymentId); 
       setPaymentStatus('pending');  
@@ -48,18 +60,18 @@ const UserForm = () => {
     if (paymentId) {
       const intervalId = setInterval(async () => {
         try {
-          const status = await fetchPaymentStatus(paymentId);  
+          const status = await fetchPaymentStatus(paymentId, userId);  
           console.log('Fetched Payment Status:', status);  
           setPaymentStatus(status); 
 
-          // If the status is no longer 'pending', stop polling
-          if (status !== 'pending') {
+          if (status === 'success') {
             clearInterval(intervalId);
-            if (status === 'success') {
-              setMessage('Payment successful! 🎉');
-            } else if (status === 'failure') {
-              setMessage('Payment failed. Please try again.');
-            }
+            setMessage('Payment successful! 🎉');
+            navigate('/userpanel');  // Navigate to UserPanel on success
+          } else if (status === 'failure') {
+            clearInterval(intervalId);
+            setMessage('Payment failed. Please try again.');
+            navigate('/');  // Navigate to home page on failure
           }
         } catch (error) {
           console.error('Error fetching payment status:', error);
@@ -68,7 +80,7 @@ const UserForm = () => {
 
       return () => clearInterval(intervalId); // Clear interval on component unmount
     }
-  }, [paymentId]);
+  }, [paymentId, userId, navigate]);
 
   return (
     <div>

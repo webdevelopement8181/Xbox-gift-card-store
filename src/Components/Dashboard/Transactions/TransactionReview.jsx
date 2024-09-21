@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchPendingPayments, updatePaymentStatus } from '../../../appwrite';  // Import fetchTransactions from appwrite
+import { fetchPendingPayments, updatePaymentStatus } from '../../../appwrite';  // Import necessary functions
 import './TransactionReview.css';  // Import the CSS file
 
 const TransactionReview = () => {
@@ -21,9 +21,9 @@ const TransactionReview = () => {
   }, []);
 
   // Update payment status (e.g., from pending to success or failure)
-  const handleUpdateStatus = async (transactionId, status) => {
+  const handleUpdateStatus = async (transactionId, userId, status) => {
     try {
-      await updatePaymentStatus(transactionId, status);  // Update the status in Appwrite
+      await updatePaymentStatus(transactionId, userId, status);  // Pass both transactionId and userId
       setTransactions((prev) =>
         prev.map((transaction) =>
           transaction.$id === transactionId
@@ -65,12 +65,12 @@ const TransactionReview = () => {
                 <td>
                   {transaction.PaymentStatus === 'pending' && (
                     <>
-                      <button onClick={() => handleUpdateStatus(transaction.$id, 'success')}>
+                      <button onClick={() => handleUpdateStatus(transaction.$id, transaction.user_id, 'success')}>
                         Mark as Success
                       </button>
                       <button
                         className="failure-button"
-                        onClick={() => handleUpdateStatus(transaction.$id, 'failure')}
+                        onClick={() => handleUpdateStatus(transaction.$id, transaction.user_id, 'failure')}
                       >
                         Mark as Failure
                       </button>

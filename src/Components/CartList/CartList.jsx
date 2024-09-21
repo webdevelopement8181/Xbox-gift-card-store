@@ -1,14 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCart } from '../Context/CartContext';
 import { FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom'; 
 import DiscountCodeInput from '../DiscountInput/DiscountInput';
-
+import { databases, account, ID } from '../../appwrite';  
+import UserPanel from '../UserPanel/UserPanel';
 import './CartList.css';
+
+// Initialize the Appwrite account service to get the user info
+
 
 const CartList = ({ isAuthenticated }) => {  
   const { cartItems, updateQuantity, removeFromCart, calculateDiscountedPrice, discountedPrice } = useCart();
   const navigate = useNavigate();
+
+  // State to store userId and documentData for UserPanel
+  const [userId, setUserId] = useState(null);
+  const [documentData, setDocumentData] = useState(null);
+
+  // Fetch the userId when the component mounts
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const user = await account.get(); // Get logged-in user info
+        setUserId(user.$id); // Store the user ID in state
+      } catch (error) {
+        console.error('Error fetching user info:', error);
+      }
+    };
+    fetchUserId();
+  }, []);
 
   // Handle quantity change
   const handleQuantityChange = (id, newQuantity) => {
@@ -26,13 +47,33 @@ const CartList = ({ isAuthenticated }) => {
     return <div>Your cart is empty.</div>;
   }
 
-  // Redirect to payment page or login if not authenticated
-  const handleProceedToCheckout = () => {
-    if (!isAuthenticated) {
-      navigate('/login');  // Redirect to login if not authenticated
-    } else {
-      navigate('/payment');  // Redirect to payment page if authenticated
-    }
+  const handleProceedToCheckout = async () => {
+      if (!isAuthenticated) {
+          navigate('/login');  // Redirect to login if not authenticated
+      } else {
+          try {
+              // Create an array of selected products with necessary information
+              const selectedProducts = cartItems.map(item => ({
+                  id: item.id,
+                  title: item.title,
+                  finalPrice: calculateDiscountedPrice(item),
+                  count: item.quantity
+              }));
+
+              // Log the selected products for debugging
+              console.log('Selected Products:', selectedProducts);
+
+              // Navigate to the payment page, passing selectedProducts and userId as state
+              navigate('/payment', {
+                state: {
+                  selectedProducts,  // Pass the selected products
+                  userId             // Pass the user ID
+                }
+              });
+          } catch (error) {
+              console.error('Error processing checkout:', error);
+          }
+      }
   };
 
   // Calculate the total price, and use the discounted price if it exists
@@ -105,9 +146,13 @@ const CartList = ({ isAuthenticated }) => {
       
         <DiscountCodeInput />
        
-        <button className="checkout-btn" onClick={handleProceedToCheckout}>  
-          Proceed to Checkout
-        </button>
+        <div>
+            <button onClick={handleProceedToCheckout}>Proceed to Checkout</button>
+
+            {/* Conditionally render UserPanel when documentData is available */}
+            {/* <UserPanel documentData={documentData} />  */}
+
+        </div>
       </div>
     </div>
   );
