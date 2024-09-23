@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams , useNavigate } from 'react-router-dom';
 import { databases, Query } from '../../appwrite';
 import './CourseDetails.css';
 import { FaDollarSign, FaShoppingCart, FaHeart } from 'react-icons/fa';
 import { useCart } from '../Context/CartContext';
 
 const CourseDetails = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [giftCard, setGiftCard] = useState(null);
   const [giftCardDetails, setGiftCardDetails] = useState(null);
@@ -71,14 +72,18 @@ const CourseDetails = () => {
   return (
     <div className="gift-card-detail-container">
       <div className="line">
-        <div className="buy-icon-container">
-          <FaShoppingCart className="buy-icon" />
-          {totalItems > 0 && (
-            <div className="quantity-circle">
-              {totalItems} {/* Display total items in cart */}
-            </div>
-          )}
+      <div
+      className="buy-icon-container"
+      onClick={() => navigate('/cart')} // Navigate to /cart when clicked
+      style={{ cursor: 'pointer' }} // Change cursor to indicate it's clickable
+    >
+      <FaShoppingCart className="buy-icon" />
+      {totalItems > 0 && (
+        <div className="quantity-circle">
+          {totalItems} {/* Display total items in cart */}
         </div>
+      )}
+    </div>
       </div>
 
       <div className="gift-card-image-section">

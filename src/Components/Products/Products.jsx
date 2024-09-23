@@ -105,7 +105,7 @@ const Products = () => {
       {/* Pagination Component */}
       <Pagination
         productsPerPage={productsPerPage}
-        totalProducts={18}  
+        totalProducts={74}  
         paginate={paginate}
         currentPage={currentPage}
       />

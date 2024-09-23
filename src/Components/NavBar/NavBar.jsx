@@ -7,10 +7,9 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import LanguageIcon from '@mui/icons-material/Language';
 import SearchBar from '../SearchBar/SearchBar';
 import { FaShoppingCart } from 'react-icons/fa'; 
-import { useCart } from '../Context/CartContext'; 
+import { useCart } from '../Context/CartContext';
 
 
 
@@ -19,10 +18,12 @@ const Navbar = ({ isAuthenticated, handleLogout }) => {
   const [xbox, setXbox] = useState(null);
   const { totalItems } = useCart(); 
 
+ ;
+
   useEffect(() => {
     if (process.env.NODE_ENV !== 'test') {
-      import('../../assets/xbox.jpg').then((image) => {
-        setXbox(image.default); // Set the imported image to state
+      import('../../assets/xbox.png').then((image) => {
+        setXbox(image.default);
       });
     }
   }, []);
@@ -38,12 +39,13 @@ const Navbar = ({ isAuthenticated, handleLogout }) => {
       navigate('/login'); // Navigate to login if not authenticated
     }
   };
+  
 
   return (
     <AppBar position="static" color="transparent" elevation={0} sx={{ borderBottom: '1px solid #e0e0e0' }}>
       <Toolbar>
         {/* Logo */}
-        <img src={xbox} alt="Logo" style={{ marginRight: '16px', height: '90px' }} />
+        <img src={xbox} alt="Logo" style={{ marginRight: '16px', height: '50px' , width :'50px'  , borderRadius :'10px'}} />
 
         {/* Search bar placeholder */}
         <Typography variant="h6" color="inherit" sx={{ flexGrow: 1 }}>
@@ -120,4 +122,4 @@ Navbar.propTypes = {
   handleLogout: PropTypes.func.isRequired,
 };
 
-export default Navbar;
+export default Navbar;  

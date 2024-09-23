@@ -21,7 +21,8 @@ import CartList from './Components/CartList/CartList';
 import { CartProvider } from './Components/Context/CartContext';
 import PaymentPage from './Components/PaymentPage/PaymentPage';
 import TransactionReview from './Components/Dashboard/Transactions/TransactionReview';
-import UserPanel from './Components/UserPanel/UserPanel'
+import UserPanel from './Components/UserPanel/UserPanel';
+import SearchResults from './Components/SearchBar/SearchResults/SearchResults';
 
 
 function App() {
@@ -92,6 +93,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<CartList isAuthenticated={isAuthenticated} />} />
           <Route path="/userpanel" element={<UserPanel user={userInfo}/>} />
+          <Route path="/search" element={< SearchResults />} />
 
 
           {/* Protect the payment route */}
