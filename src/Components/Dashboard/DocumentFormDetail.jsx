@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 const DocumentFormDetail = () => {
     const navigate = useNavigate();
     const { id: detailId } = useParams(); 
-    const collectionId = '66cde5d000045bfa07ae'; // ID of the courseDetails collection
+    const collectionId = '66cde5d000045bfa07ae'; // ID of the ProductDetails collection
 
     const [formData, setFormData] = useState({
         detailedDescription: '',
@@ -71,7 +71,7 @@ const DocumentFormDetail = () => {
             if (detailId) {
                 // Update existing detail
                 await databases.updateDocument('66cde1b70007c60cbc12', collectionId, detailId, dataToSubmit);
-                navigate(`/admin/course-details`); // Redirect to the details list
+                navigate(`/admin/Product-details`); // Redirect to the details list
             } else {
                 console.error('Creating new details is not allowed.');
             }

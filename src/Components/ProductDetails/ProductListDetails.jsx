@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useParams , useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { databases, Query } from '../../appwrite';
-import './CourseDetails.css';
+import './ProductDetails.css';
 import { FaDollarSign, FaShoppingCart, FaHeart } from 'react-icons/fa';
 import { useCart } from '../Context/CartContext';
 
-const CourseDetails = () => {
+const ProductListDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [giftCard, setGiftCard] = useState(null);
@@ -19,12 +19,10 @@ const CourseDetails = () => {
     const fetchGiftCardData = async () => {
       try {
         const giftCardResponse = await databases.getDocument(
-          '66cde1b70007c60cbc12', // Database ID
-          '66cde1ce003c4c7dfb11', // Collection ID
+          '66cde1b70007c60cbc12',
+          '66cde1ce003c4c7dfb11',
           id
         );
-        
-        // Ensure inSale and discountPercentage are part of the response
         setGiftCard(giftCardResponse);
 
         const giftCardDetailsResponse = await databases.listDocuments(
@@ -44,22 +42,19 @@ const CourseDetails = () => {
     fetchGiftCardData();
   }, [id]);
 
-  // Only call calculateDiscountedPrice if giftCard is not null
-  const discountedPrice = giftCard ? calculateDiscountedPrice(giftCard) : null;
+  const handleQuantityChange = useCallback((type) => {
+    setQuantity(prevQuantity => {
+      if (type === 'increase') return prevQuantity + 1;
+      if (type === 'decrease' && prevQuantity > 1) return prevQuantity - 1;
+      return prevQuantity;
+    });
+  }, []);
 
-  const handleQuantityChange = (type) => {
-    if (type === 'increase') {
-      setQuantity(quantity + 1);
-    } else if (type === 'decrease' && quantity > 1) {
-      setQuantity(quantity - 1);
-    }
-  };
-
-  const handleAddToCart = () => {
+  const handleAddToCart = useCallback(() => {
     if (giftCard) {
-      addToCart(giftCard, quantity); // Pass product and selected quantity
+      addToCart(giftCard, quantity);
     }
-  };
+  }, [giftCard, quantity, addToCart]);
 
   if (hasError) {
     return <div>Error loading gift card details. Please try again later.</div>;
@@ -69,21 +64,19 @@ const CourseDetails = () => {
     return <div>Loading...</div>;
   }
 
+  const discountedPrice = giftCard ? calculateDiscountedPrice(giftCard) : null;
+
   return (
     <div className="gift-card-detail-container">
       <div className="line">
-      <div
-      className="buy-icon-container"
-      onClick={() => navigate('/cart')} // Navigate to /cart when clicked
-      style={{ cursor: 'pointer' }} // Change cursor to indicate it's clickable
-    >
-      <FaShoppingCart className="buy-icon" />
-      {totalItems > 0 && (
-        <div className="quantity-circle">
-          {totalItems} {/* Display total items in cart */}
+        <div
+          className="buy-icon-container"
+          onClick={() => navigate('/cart')}
+          style={{ cursor: 'pointer' }}
+        >
+          <FaShoppingCart className="buy-icon" />
+          {totalItems > 0 && <div className="quantity-circle">{totalItems}</div>}
         </div>
-      )}
-    </div>
       </div>
 
       <div className="gift-card-image-section">
@@ -98,11 +91,9 @@ const CourseDetails = () => {
         <p className="price">
           <FaDollarSign />
           {giftCard.inSale ? (
-            <>
-              <span className="discounted-price">${discountedPrice}</span> Discounted price
-            </>
+            <span className="discounted-price">${discountedPrice}</span>
           ) : (
-            <span className="price-value">${giftCard.price}</span> // Regular price if not on sale
+            <span className="price-value">${giftCard.price}</span>
           )}
         </p>
 
@@ -131,4 +122,4 @@ const CourseDetails = () => {
   );
 };
 
-export default CourseDetails;
+export default ProductListDetails;

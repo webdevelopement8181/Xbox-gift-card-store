@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'; 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import './CourseCard.css';  
+import './ProductsCard.css';  
 
-const CourseCard = ({ id, title, description, price, image, inSale, discountPercentage }) => {
+const ProductsCards = ({ id, title, description, price, image, inSale, discountPercentage }) => {
   
   // Calculate discounted price if the product is on sale
   const discountedPrice = inSale ? (price - (price * discountPercentage / 100)).toFixed(2) : price;
 
   return (
-    <Link to={`/course/${id}`} className="course-card-link">
+    <Link to={`/product/${id}`} className="course-card-link">
       <div className="course-card">
         
       {inSale && <span className="sale-badge">Sale {discountPercentage}% Off</span>}
@@ -45,7 +45,7 @@ const CourseCard = ({ id, title, description, price, image, inSale, discountPerc
   );
 };
 
-CourseCard.propTypes = {
+ProductsCards.propTypes = {
   id: PropTypes.string.isRequired, 
   title: PropTypes.string.isRequired,  
   description: PropTypes.string.isRequired, 
@@ -55,4 +55,4 @@ CourseCard.propTypes = {
   discountPercentage: PropTypes.number
 };
 
-export default CourseCard;
+export default ProductsCards;

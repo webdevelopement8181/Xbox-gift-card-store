@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { databases } from '../../appwrite';
 import { useNavigate, useParams } from 'react-router-dom';
-import '../../assets/DocumentForm.css'; 
+import '../../assets/css/DocumentForm.css'; 
 
 const DocumentForm = ({ collectionName }) => {
     const navigate = useNavigate();

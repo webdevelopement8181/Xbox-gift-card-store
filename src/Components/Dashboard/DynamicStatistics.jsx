@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import '../../assets/DynamicStatistics.css';
+import '../../assets/css/DynamicStatistics.css';
 
 import {
   BsFillArchiveFill,
@@ -8,16 +8,16 @@ import {
 import { databases,  } from '../../appwrite';
 
 const DynamicStatistics = () => {
-  const [onlineCourseCount, setOnlineCourseCount] = useState(0);
+  const [onlineProductCount, setOnlineProductCount] = useState(0);
   
 
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
-        // Fetch number of titles in onlineCourse collection
-        const onlineCourseResponse = await databases.listDocuments('66cde1b70007c60cbc12', '66cde1ce003c4c7dfb11');
-        console.log('OnlineCourse Response:', onlineCourseResponse);  // Debugging output
-        setOnlineCourseCount(onlineCourseResponse.total);
+        // Fetch number of titles in onlineProduct collection
+        const onlineProductResponse = await databases.listDocuments('66cde1b70007c60cbc12', '66cde1ce003c4c7dfb11');
+        console.log('OnlineProduct Response:', onlineProductResponse);  // Debugging output
+        setOnlineProductCount(onlineProductResponse.total);
 
         
       } catch (error) {
@@ -39,10 +39,10 @@ const DynamicStatistics = () => {
       <div className="main-cards">
         <div className="card" style={{ backgroundColor: '#AA77FF' }}>
           <div className="card-inner">
-            <h3>ONLINE COURSES</h3>
+            <h3>ONLINE ProductS</h3>
             <BsFillArchiveFill className="card_icon" />
           </div>
-          <h1>{onlineCourseCount}</h1>
+          <h1>{onlineProductCount}</h1>
         </div>
 
         <div className="card" style={{ backgroundColor: '#5A639C' }}>

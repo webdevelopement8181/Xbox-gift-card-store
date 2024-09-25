@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { databases, Query } from '../../../appwrite';  
-import CourseCards from '../../CourseCard/CourseCards';
+import ProductsCards from '../../ProductsCard/ProductsCards';
 // import '../../../assets/SearchResult.css';
 const SearchResults = () => {
   const location = useLocation();
@@ -37,10 +37,8 @@ const SearchResults = () => {
     return <div>Error fetching courses.</div>;
   }
 
-  // Function to normalize the title and search query by trimming and converting to lowercase
   const normalizeString = (str) => str.trim().toLowerCase();
 
-  // Filter the courses based on the search query and price range
   const filteredCourses = courses.filter(course => {
     // Normalize title
     const titleMatches = course.title && normalizeString(course.title).includes(normalizeString(searchQuery));
@@ -79,7 +77,7 @@ const SearchResults = () => {
       <div className="courses-list">
   {filteredCourses.length > 0 ? (
     filteredCourses.map(course => (
-      <CourseCards
+      <ProductsCards
         key={course.$id}
         id={course.$id}
         title={course.title}

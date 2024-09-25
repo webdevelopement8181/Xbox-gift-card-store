@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-
 import Navbar from './Components/NavBar/NavBar';
 import Home from './Components/Home/Home';
 import Login from './Components/LogIn/Login';
@@ -8,13 +7,13 @@ import Products from './Components/Products/Products';
 import About from './Components/About/About';
 import Contact from './Components/Contact/Contact';
 import Hero from './Components/HeroSection/Hesro';
-import CourseDetails from './Components/CourseDetails/CourseDetails';
+import ProductListDetails from './Components/ProductDetails/ProductListDetails';
 import { account } from './appwrite';
 import AdminDashboard from './Components/Dashboard/AdminDashboard';
 import ChartDashboard from './Components/Dashboard/ChartDashboard';
-import CourseList from './Components/Dashboard/CourseList';
+import DashProductLis from './Components/Dashboard/DashProductLis';
 import DocumentForm from './Components/Dashboard/DocumentForm'; 
-import CourseListDetail from './Components/Dashboard/CreateListDetail';
+import DashProductListDetail from './Components/Dashboard/DashProductListDetail';
 import DocumentFormDetail from './Components/Dashboard/DocumentFormDetail';
 import AdminRoute from './Components/Dashboard/AdminRoute';
 import CartList from './Components/CartList/CartList';
@@ -58,16 +57,16 @@ function App() {
       <Router>
         <Routes>
         <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} setUserInfo={setUserInfo}  />} />       
-           <Route path="/course/:id" element={<CourseDetails />} />
+           <Route path="/Product/:id" element={<ProductListDetails />} />
           <Route path="/admin/*" element={<AdminRoute />}>
             <Route path="*" element={<AdminDashboard />}>
               <Route path="transaction" element={<TransactionReview collectionName="PaymentData" />} />
               <Route path="" element={<ChartDashboard />} />
-              <Route path="courses" element={<CourseList collectionName="onlineCourse" />} />
-              <Route path="course-details" element={<CourseListDetail collectionName="courseDetails" />} />
-              <Route path="courses/create" element={<DocumentForm collectionName="onlineCourse" />} />
-              <Route path="courses/edit/:id" element={<DocumentForm collectionName="onlineCourse" />} />
-              <Route path="course-details/edit/:id" element={<DocumentFormDetail />} />
+              <Route path="products" element={<DashProductLis collectionName="onlineCourse" />} />
+              <Route path="Product-details" element={<DashProductListDetail collectionName="ProductListDetails" />} />
+              <Route path="Product/create" element={<DocumentForm collectionName="onlineCourse" />} />
+              <Route path="Product/edit/:id" element={<DocumentForm collectionName="onlineCourse" />} />
+              <Route path="Product-details/edit/:id" element={<DocumentFormDetail />} />
             </Route>
           </Route>
 

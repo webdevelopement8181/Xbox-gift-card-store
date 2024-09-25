@@ -1,24 +1,20 @@
 import React from 'react';
-import { Button, Typography, Paper } from '@mui/material';
+import { Helmet } from 'react-helmet';  
 
-const Sample = () => {
+const About = () => {
   return (
-    <Paper sx={{ padding: '20px', margin: '20px', textAlign: 'center' }}>
-      <Typography
-        variant="h4"
-        sx={{ color: '#333', marginBottom: '15px' }}
-      >
-        Hello from Sample Component
-      </Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        sx={{ fontSize: '16px', padding: '10px 20px' }}
-      >
-        Click Me
-      </Button>
-    </Paper>
+    <div>
+      {/* Helmet for SEO */}
+      <Helmet>
+        <title>About Us | Your Brand</title>
+        <meta name="description" content="Learn more about Your Brand, our mission, and the values we stand by." />
+        <link rel="canonical" href="" />
+      </Helmet>
+
+      <h1>About Us</h1>
+      <p>This is the about page x-box gift card. We are dedicated to providing the best services to our customers.</p>
+    </div>
   );
 };
 
-export default Sample;
+export default About;

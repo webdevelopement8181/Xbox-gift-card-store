@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';  // Import React Helmet
 import { fetchProducts } from '../../appwrite'; 
-import CourseCard from '../CourseCard/CourseCards';
-import  Pagination from '../Pagination/Pagination'
+import ProductsCards from '../ProductsCard/ProductsCards';
+import Pagination from '../Pagination/Pagination';
 import './Products.css'; // Import your CSS styles
 
 const Products = () => {
@@ -40,6 +41,13 @@ const Products = () => {
 
   return (
     <div>
+      {/* Helmet for SEO */}
+      <Helmet>
+        <title>Products | Your Brand</title>
+        <meta name="description" content="Browse our wide range of products including Gaming, Entertainment, and Console Gaming categories. Filter by price and sort by the newest items." />
+        <link rel="canonical" href="" />
+      </Helmet>
+
       <h2>Filter by Price, Category, and Sort by Newest</h2>
 
       {/* Price Range Filter */}
@@ -89,7 +97,7 @@ const Products = () => {
           <div>No products found for the selected filters.</div>
         ) : (
           products.map((product) => (
-            <CourseCard
+            <ProductsCards
               key={product.$id}
               id={product.$id}
               title={product.title}

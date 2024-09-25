@@ -142,10 +142,7 @@ export const getUserPayments = async (userId) => {
   }
 };
 
-// Function to update the user's name and email
-// Function to update the user's name and email, including password for email update
-// Function to update the user's name and email, including password for email update
-// Function to update the user's name, email, and password
+
 export const updateUser = async (email, name, newPassword, currentPassword) => {
   try {
     const currentUser = await account.get();

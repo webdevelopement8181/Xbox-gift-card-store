@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
@@ -7,64 +7,54 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import SearchBar from '../SearchBar/SearchBar';
+import IconSearchBar from '../SearchBar/IconSearchBar';
 import { FaShoppingCart } from 'react-icons/fa'; 
 import { useCart } from '../Context/CartContext';
 
-
-
-const Navbar = ({ isAuthenticated, handleLogout }) => {
+const Navbar = React.memo(({ isAuthenticated, handleLogout }) => {
   const navigate = useNavigate();
   const [xbox, setXbox] = useState(null);
-  const { totalItems } = useCart(); 
-
- ;
+  const { totalItems } = useCart();
 
   useEffect(() => {
     if (process.env.NODE_ENV !== 'test') {
-      import('../../assets/xbox.png').then((image) => {
+      import('../../assets/img/xbox.png').then((image) => {
         setXbox(image.default);
       });
     }
   }, []);
 
-  const handleLoginClick = (event) => {
+  const handleLoginClick = useCallback((event) => {
     if (isAuthenticated) {
-      event.preventDefault(); // Prevent navigation to the login page
+      event.preventDefault(); 
       const confirmLogout = window.confirm("You are already logged in. Would you like to log out?");
       if (confirmLogout) {
         handleLogout();
       }
     } else {
-      navigate('/login'); // Navigate to login if not authenticated
+      navigate('/login'); 
     }
-  };
-  
+  }, [isAuthenticated, handleLogout, navigate]);
+
+  const navigationItems = ['Products', 'About', 'Contact'].map((text, index) => (
+    <Button
+      key={index}
+      color="inherit"
+      sx={{ textTransform: 'none', fontSize: '0.875rem', fontWeight: 500, marginRight: '16px', color: '#1a1a1a' }}
+      onClick={() => navigate(`/${text.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}`)}
+    >
+      {text}
+    </Button>
+  ));
 
   return (
     <AppBar position="static" color="transparent" elevation={0} sx={{ borderBottom: '1px solid #e0e0e0' }}>
       <Toolbar>
-        {/* Logo */}
-        <img src={xbox} alt="Logo" style={{ marginRight: '16px', height: '50px' , width :'50px'  , borderRadius :'10px'}} />
-
-        {/* Search bar placeholder */}
+        <img src={xbox} alt="Logo" style={{ marginRight: '16px', height: '50px', width: '50px', borderRadius: '10px' }} />
         <Typography variant="h6" color="inherit" sx={{ flexGrow: 1 }}>
-          <SearchBar />
+          <IconSearchBar />
         </Typography>
-
-        {/* Navigation Buttons */}
-        {['Products', 'About', 'Contact'].map((text, index) => (
-          <Button
-            key={index}
-            color="inherit"
-            sx={{ textTransform: 'none', fontSize: '0.875rem', fontWeight: 500, marginRight: '16px', color: '#1a1a1a' }}
-            onClick={() => navigate(`/${text.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}`)}
-          >
-            {text}
-          </Button>
-        ))}
-
-        {/* Cart Icon with Quantity */}
+        {navigationItems}
         <IconButton color="inherit" sx={{ color: '#1a1a1a' }} onClick={() => navigate('/cart')}>
           <FaShoppingCart />
           {totalItems > 0 && (
@@ -82,15 +72,12 @@ const Navbar = ({ isAuthenticated, handleLogout }) => {
             </span>
           )}
         </IconButton>
-
-        {/* User Authentication */}
         {!isAuthenticated ? (
           <IconButton
             color="inherit"
             sx={{ color: '#1a1a1a', fontSize: '0.875rem' }}
             onClick={handleLoginClick}
           >
-           
             <span style={{ fontSize: '0.875rem', marginRight: '15px' }}>LogIn/SignUp</span>
           </IconButton>
         ) : (
@@ -102,24 +89,22 @@ const Navbar = ({ isAuthenticated, handleLogout }) => {
             Log Out
           </Button>
         )}
-
-        {/* Language Button */}
         <Button
           color="inherit"
           startIcon={<AccountCircle />}
           sx={{ textTransform: 'none', backgroundColor: '#675D50', color: 'white', padding: '6px 12px', borderRadius: '10px' }}
-          onClick={() => navigate('/userpanel')}  // Navigate to /userpanel
+          onClick={() => navigate('/userpanel')}
         >
           User Panel
         </Button>
       </Toolbar>
     </AppBar>
   );
-};
+});
 
 Navbar.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   handleLogout: PropTypes.func.isRequired,
 };
 
-export default Navbar;  
+export default Navbar;

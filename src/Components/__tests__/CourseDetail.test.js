@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom'; 
-import CourseDetails from '../CourseDetails/CourseDetails'; 
+import ProductListDetails from '../ProductDetails/ProductListDetails'; 
 import { useCart } from '../Context/CartContext';
 import { databases } from '../../appwrite';
 
@@ -9,7 +9,7 @@ import { databases } from '../../appwrite';
 jest.mock('../../appwrite');
 jest.mock('../Context/CartContext.jsx');
 
-describe('CourseDetails Component', () => {
+describe('ProductListDetails Component', () => {
   const mockUseCart = {
     totalItems: 3,
     addToCart: jest.fn(),
@@ -23,7 +23,7 @@ describe('CourseDetails Component', () => {
   test('renders loading state initially', () => {
     render(
       <BrowserRouter>
-        <CourseDetails />
+        <ProductListDetails/>
       </BrowserRouter>
     );
 
@@ -35,7 +35,7 @@ describe('CourseDetails Component', () => {
 
     render(
       <BrowserRouter>
-        <CourseDetails />
+        <ProductListDetails />
       </BrowserRouter>
     );
 
@@ -58,7 +58,7 @@ describe('CourseDetails Component', () => {
 
     render(
       <BrowserRouter>
-        <CourseDetails />
+        <ProductListDetails/>
       </BrowserRouter>
     );
 

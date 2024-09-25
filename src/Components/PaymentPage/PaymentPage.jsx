@@ -136,10 +136,10 @@ const UserForm = () => {
         <button type="submit">Submit</button>
       </form>
 
-      {/* Display payment status or message */}
+      
       {message && <p>{message}</p>}
 
-      {/* Show waiting message only when status is 'pending' */}
+   
       {paymentStatus === 'pending' && !message && (
         <p>Waiting for admin confirmation...</p>
       )}

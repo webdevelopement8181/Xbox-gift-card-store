@@ -5,7 +5,7 @@ import { IconButton, Button, Table, TableBody, TableCell, TableHead, TableRow, P
 import { Edit, Delete, Add } from '@mui/icons-material';
 import { databases } from '../../appwrite';
 
-const CourseList = () => {
+const ProductList = () => {
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
 
@@ -32,11 +32,11 @@ const CourseList = () => {
   };
 
   const handleEdit = (id) => {
-    navigate(`/admin/courses/edit/${id}`);
+    navigate(`/admin/Product/edit/${id}`);
   };
 
   const handleCreate = () => {
-    navigate('/admin/courses/create');
+    navigate('/admin/Product/create');
   };
 
   return (
@@ -81,5 +81,5 @@ const CourseList = () => {
   );
 };
 
-export default CourseList;
+export default ProductList;
 

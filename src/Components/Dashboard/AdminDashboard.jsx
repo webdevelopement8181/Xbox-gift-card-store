@@ -8,7 +8,7 @@ import ChartDashboard from'./ChartDashboard';
 
 const AdminDashboard = () => {
     const [open, setOpen] = useState(false);
-    const location = useLocation(); // This gives us the current path
+    const location = useLocation(); //  the current path
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -41,13 +41,13 @@ const AdminDashboard = () => {
                             <HomeIcon style={{ color: '#fff', marginBottom: '20px', marginRight: open ? '20px' : '0' }} />
                             {open && <ListItemText primary="Home" />}
                         </ListItem>
-                        <ListItem button component={Link} to="/admin/courses">
+                        <ListItem button component={Link} to="/admin/products">
                             <StoreIcon style={{ color: '#fff', marginBottom: '20px', marginRight: open ? '20px' : '0' }} />
-                            {open && <ListItemText primary="Manage Courses" />}
+                            {open && <ListItemText primary="Manage Products" />}
                         </ListItem>
-                        <ListItem button component={Link} to="/admin/course-details">
+                        <ListItem button component={Link} to="/admin/Product-details">
                             <PeopleIcon style={{ color: '#fff', marginBottom: '20px', marginRight: open ? '20px' : '0' }} />
-                            {open && <ListItemText primary="Manage Course Details" />}
+                            {open && <ListItemText primary="Manage Product Details" />}
                         </ListItem>
                         <ListItem button component={Link} to="/admin/transaction">
                             <PeopleIcon style={{ color: '#fff', marginBottom: '20px', marginRight: open ? '20px' : '0' }} />
