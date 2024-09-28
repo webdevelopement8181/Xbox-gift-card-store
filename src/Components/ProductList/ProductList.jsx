@@ -7,13 +7,13 @@ import ProductsCards from '../ProductsCard/ProductsCards';
 import './ProductList.css';
 
 const ProductList = () => {
-  const [Products, setProducts] = useState([]);
+  const [products, setProducts] = useState([]);
   const [hasError, setHasError] = useState(false); // error state
 
   useEffect(() => {
-    // Add this line
+    // Fetch popular products
     const fetchProducts = async () => {
-      console.log('useEffect triggered'); 
+      console.log('useEffect triggered');
       try {
         const response = await databases.listDocuments(
           '66cde1b70007c60cbc12', 
@@ -26,7 +26,6 @@ const ProductList = () => {
       } catch (error) {
         console.error('Error fetching Products:', error);
         setHasError(true); 
-        // Set error state if fetch fails
       }
     };
 
@@ -36,35 +35,44 @@ const ProductList = () => {
   if (hasError) {
     return <div>Error fetching Products.</div>; 
   }
-   
-   const settings = {
+
+  const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 4, 
+    slidesToShow: 4, // Default to 4 on large screens
     slidesToScroll: 1,
     autoplaySpeed: 2000,
     cssEase: "linear",
     arrows: true,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1440, // Large desktop
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 5,
           slidesToScroll: 1,
           infinite: true,
           dots: true
         }
       },
       {
-        breakpoint: 768,
+        breakpoint: 1024, // Tablet (landscape)
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 768, // Tablet (portrait)
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1
         }
       },
       {
-        breakpoint: 480,
+        breakpoint: 480, // Mobile (small devices)
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1
@@ -73,22 +81,21 @@ const ProductList = () => {
     ]
   };
 
-
   return (
     <div>
       <h1 className='course-header'>Popular Products</h1>
-      <div className="Products-list">
+      <div className="products-list">
         <Slider {...settings}>
-          {Products.map(course => (
-            <div key={course.$id}>
+          {products.map(product => (
+            <div key={product.$id}>
               <ProductsCards
-                id={course.$id}
-                title={course.title}
-                description={course.description}
-                price={course.price}
-                image={course.image}
-                inSale={course.inSale}  // Pass isInSale
-                discountPercentage={course.discountPercentage}  // Pass discountPercentage
+                id={product.$id}
+                title={product.title}
+                description={product.description}
+                price={product.price}
+                image={product.image}
+                inSale={product.inSale}
+                discountPercentage={product.discountPercentage}
               />
             </div>
           ))}
@@ -97,6 +104,5 @@ const ProductList = () => {
     </div>
   );
 };
-
 
 export default ProductList;

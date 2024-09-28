@@ -1,62 +1,89 @@
 import React from "react";
-import "./Footer.css";
+import { Grid, Typography, Link, IconButton, Box } from "@mui/material";
+import { Facebook, Instagram, Twitter, Mail, Phone } from "@mui/icons-material";
 
 const Footer = () => {
   return (
-    <footer className="footer">
-      <div className="footer-container">
-        <div className="footer-section">
-          <h3>Information</h3>
+    <Box component="footer" sx={{ backgroundColor: '#117554', color: '#fff', py: 2 }}>
+      <Grid container spacing={3} sx={{ justifyContent: "center", textAlign: "center" }}>
+        {/* Information Section */}
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="h6" gutterBottom>
+            Information
+          </Typography>
           <ul>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">More Search</a></li>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Testimonials</a></li>
-            <li><a href="#">Events</a></li>
+            <li><Link href="#" color="inherit" underline="hover">About Us</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">More Search</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">Blog</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">Testimonials</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">Events</Link></li>
           </ul>
-        </div>
-        <div className="footer-section">
-          <h3>Helpful Links</h3>
+        </Grid>
+
+        {/* Helpful Links Section */}
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="h6" gutterBottom>
+            Helpful Links
+          </Typography>
           <ul>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Supports</a></li>
-            <li><a href="#">Terms & Condition</a></li>
-            <li><a href="#">Privacy Policy</a></li>
+            <li><Link href="#" color="inherit" underline="hover">Services</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">Supports</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">Terms & Condition</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">Privacy Policy</Link></li>
           </ul>
-        </div>
-        <div className="footer-section">
-          <h3>Our Services</h3>
+        </Grid>
+
+        {/* Our Services Section */}
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="h6" gutterBottom>
+            Our Services
+          </Typography>
           <ul>
-            <li><a href="#">Brands list</a></li>
-            <li><a href="#">Order</a></li>
-            <li><a href="#">Return & Exchange</a></li>
-            <li><a href="#">Fashion list</a></li>
-            <li><a href="#">Blog</a></li>
+            <li><Link href="#" color="inherit" underline="hover">Brands list</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">Order</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">Return & Exchange</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">Fashion list</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">Blog</Link></li>
           </ul>
-        </div>
-        <div className="footer-section">
-          <h3>Contact Us</h3>
+        </Grid>
+
+        {/* Contact Us Section */}
+        <Grid item xs={12} sm={6} md={3}>
+          <Typography variant="h6" gutterBottom>
+            Contact Us
+          </Typography>
           <ul>
-            <li><i className="fa fa-phone"></i> +91 9999 999 999</li>
-            <li><i className="fa fa-envelope"></i> youremailid.com</li>
-            <li className="social-icons">
-              <a href="#"><i className="fa fa-facebook"></i></a>
-              <a href="#"><i className="fa fa-google-plus"></i></a>
-              <a href="#"><i className="fa fa-twitter"></i></a>
-              <a href="#"><i className="fa fa-instagram"></i></a>
+            <li>
+              <Phone /> +91 9999 999 999
+            </li>
+            <li>
+              <Mail /> youremailid.com
+            </li>
+            <li>
+              <IconButton href="#" sx={{ color: '#fff' }}>
+                <Facebook />
+              </IconButton>
+              <IconButton href="#" sx={{ color: '#fff' }}>
+                <Instagram />
+              </IconButton>
+              <IconButton href="#" sx={{ color: '#fff' }}>
+                <Twitter />
+              </IconButton>
             </li>
           </ul>
-        </div>
-      </div>
-      <div className="footer-bottom">
-        <p>&copy; 2018 @ company.Ltd. | All Rights Reserved</p>
-        <ul className="footer-links">
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">Privacy</a></li>
-          <li><a href="#">Terms & Condition</a></li>
-        </ul>
-      </div>
-    </footer>
+        </Grid>
+      </Grid>
+
+      {/* Footer Bottom Section */}
+      <Box sx={{ mt: 3, borderTop: '1px solid #555', pt: 2, textAlign: 'center' }}>
+        <Typography variant="body2">&copy; 2024 @ company.Ltd. | All Rights Reserved</Typography>
+        <Box sx={{ mt: 1 }}>
+          <Link href="#" color="inherit" underline="hover" sx={{ mr: 2 }}>FAQ</Link>
+          <Link href="#" color="inherit" underline="hover" sx={{ mr: 2 }}>Privacy</Link>
+          <Link href="#" color="inherit" underline="hover">Terms & Condition</Link>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

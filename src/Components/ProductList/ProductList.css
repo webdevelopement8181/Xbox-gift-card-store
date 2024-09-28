@@ -1,21 +1,41 @@
-.courses-list {
+.products-list {
+  margin: 0 auto;
   padding: 20px;
+  width: 100%;
+  height: 900px;
+  max-width: 3140px; /* Limit the max width on large screens */
+}
+
+.course-header {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  text-transform: capitalize;
 }
 
 .slick-slide {
+
+  display: flex;
+  justify-content: center;
   padding: 10px;
 }
 
-.slick-slide img {
-  width: 100%;
-  display: block;
-  margin: 0 auto;
+.slick-dots li button:before {
+  color: #000; /* Customize dot color */
 }
 
-.course-card {
-  margin: 0 auto;
+@media (max-width: 768px) {
+  .course-header {
+    font-size: 1.5rem; /* Smaller font for smaller screens */
+  }
+
+  .slick-slide {
+    padding: 5px;
+  }
 }
-.course-header{
-  text-align: center;
-  text-transform: capitalize;
+
+@media (max-width: 480px) {
+  .course-header {
+    font-size: 1.2rem; /* Even smaller font for mobile screens */
+  }
 }

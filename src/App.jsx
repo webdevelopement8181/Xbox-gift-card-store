@@ -6,7 +6,7 @@ import Login from './Components/LogIn/Login';
 import Products from './Components/Products/Products';
 import About from './Components/About/About';
 import Contact from './Components/Contact/Contact';
-import Hero from './Components/HeroSection/Hesro';
+import Hero from './Components/HeroSection/Hero';
 import ProductListDetails from './Components/ProductDetails/ProductListDetails';
 import { account } from './appwrite';
 import AdminDashboard from './Components/Dashboard/AdminDashboard';

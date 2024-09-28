@@ -42,8 +42,8 @@ const Home = () => {
                 <link rel="canonical" href="" />
             </Helmet>
 
-            <div id="product-list-placeholder" style={{ height: '200px', backgroundColor: 'blue' }}>
-                THIS IS THE PLACEHOLDER
+            <div id="product-list-placeholder" style={{ height: '10px',  }}>
+               
             </div>
 
             {/* Only show ProductList when showProductsList becomes true */}

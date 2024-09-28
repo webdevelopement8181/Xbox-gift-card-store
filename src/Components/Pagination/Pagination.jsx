@@ -1,39 +1,47 @@
 import React from 'react';
-import './Pagination.css'
+import { Pagination as MUIPagination, PaginationItem, Button } from '@mui/material';
 
 const Pagination = ({ productsPerPage, totalProducts, paginate, currentPage }) => {
-  const pageNumbers = [];
+  const pageNumbers = Math.ceil(totalProducts / productsPerPage);
 
-  // Calculate the number of pages
-  for (let i = 1; i <= Math.ceil(totalProducts / productsPerPage); i++) {
-    pageNumbers.push(i);
-  }
+  const handlePageChange = (event, value) => {
+    paginate(value);
+  };
 
   return (
-    <nav>
-       
-      <ul className="pagination">
-        {currentPage > 1 && (
-          <li>
-            <button onClick={() => paginate(currentPage - 1)}>Previous</button>
-          </li>
-        )}
+    <nav style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => paginate(currentPage - 1)}
+        disabled={currentPage === 1}
+        style={{ marginRight: '10px' }}
+      >
+        Previous
+      </Button>
 
-        {/* Render page numbers */}
-        {pageNumbers.map(number => (
-          <li key={number} className={currentPage === number ? 'active' : ''}>
-            <button onClick={() => paginate(number)}>
-              {number}
-            </button>
-          </li>
-        ))}
-
-        {currentPage < pageNumbers.length && (
-          <li>
-            <button onClick={() => paginate(currentPage + 1)}>Next</button>
-          </li>
+      <MUIPagination
+        count={pageNumbers}
+        page={currentPage}
+        onChange={handlePageChange}
+        renderItem={(item) => (
+          <PaginationItem {...item} />
         )}
-      </ul>
+        siblingCount={1}
+        boundaryCount={1}
+        color="primary"
+        shape="rounded"
+      />
+
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => paginate(currentPage + 1)}
+        disabled={currentPage === pageNumbers}
+        style={{ marginLeft: '10px' }}
+      >
+        Next
+      </Button>
     </nav>
   );
 };

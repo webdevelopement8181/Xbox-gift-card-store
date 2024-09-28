@@ -10,21 +10,20 @@
   .products-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+   
     padding: 20px;
     justify-content: center; /* This centers the list horizontally */
   }
   
   .products-grid > div {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
+
     border-radius: 8px;
-    padding: 10px;
+    padding: 20px;
     text-align: center;
-    flex: 0 0 calc(25% - 20px); /* This makes the items take up 25% of the container width, minus the gap */
+    flex: 0 0 calc(15% - 20px); /* This makes the items take up 25% of the container width, minus the gap */
     box-sizing: border-box; /* Ensures padding and borders are included in the width */
   }
-  
+
   @media (max-width: 1024px) {
     .products-grid > div {
       flex: 0 0 calc(33.33% - 20px); /* Adjust to 3 items per row on smaller screens */

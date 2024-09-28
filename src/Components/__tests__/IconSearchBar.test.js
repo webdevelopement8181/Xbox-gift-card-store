@@ -18,23 +18,17 @@ describe('IconSearchBar component', () => {
       </BrowserRouter>
     );
 
-    // Check if the SearchIcon is rendered (You can adjust this based on how the icon is implemented)
     expect(container.querySelector('.MuiSvgIcon-root')).toBeInTheDocument(); // Assuming MUI adds the class for icons
 
-    // Check that the input is not rendered initially
     expect(screen.queryByPlaceholderText('Type to Search...')).toBeNull();
 
-    // Simulate mouse hover over the container using the class
     fireEvent.mouseEnter(container.querySelector('.icon-search-bar'));
 
-    // Check that the input appears after hover
     expect(screen.getByPlaceholderText('Type to Search...')).toBeInTheDocument();
 
-    // Simulate typing into the input field
     const input = screen.getByPlaceholderText('Type to Search...');
     fireEvent.change(input, { target: { value: 'test query' } });
 
-    // Check if the input value is updated
     expect(input.value).toBe('test query');
   });
 });

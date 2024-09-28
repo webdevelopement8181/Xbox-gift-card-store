@@ -1,121 +1,166 @@
-.course-card-link {
-  text-decoration: none;
-  color: inherit;
-}
-
-.course-card {
-  width: 400px; /* Fixed width */
-  height: 650px; /* Allow height to adjust based on content */
-  border-radius: 10px;
+.product-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
   overflow: hidden;
-  background-color: #fff; /* Background color for the card */
-  color: rgb(13, 0, 0); /* Text color */
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0px 4px 10px rgba(184, 138, 138, 0.1);
-  transition: transform 0.3s ease;
-  position: relative; /* Add this for absolute positioning of the sale badge */
+  height: 100%;
 }
 
-.course-card:hover {
+.product-card:hover {
   transform: translateY(-5px);
 }
 
-.course-image {
+.product-image {
   width: 100%;
-  height: 60%; /* Fixed height for the image section */
-  background-color: #e0e0e0; /* Background color for placeholder */
+  height: 200px;
+  background-color: #f5f5f5;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 
-.course-image img {
+.responsive-image {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensure the image covers the area without distortion */
+  object-fit: cover;
+  border-radius: 8px 8px 0 0;
 }
 
 .image-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  color: #777;
-}
-
-.course-content {
-  padding: 15px;
-}
-
-.course-title {
-  color: #110202;
-  font-size: 1rem;
-  margin: 0;
-  font-weight: bold;
-}
-
-.course-description {
-  font-size: 0.875rem;
-  margin: 5px 0;
-  color: #110202; /* Adjust text color if needed */
-}
-
-.course-region {
-  font-size: 0.875rem;
-  margin: 10px 0;
-  color: #12190d; /* Green color for region */
-}
-
-.course-price {
   font-size: 1.5rem;
-  font-weight: bold;
-  color: #190a0a;
-  margin: 10px 0;
+  color: #aaa;
 }
 
-/* Original price with strikethrough */
-.course-price .original-price {
+.product-content {
+  padding: 16px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.product-description {
+  font-size: 1rem;
+  color: #666;
+  flex-grow: 1;
+  text-decoration: none;
+}
+
+.product-price {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.original-price {
   text-decoration: line-through;
-  color: #999; /* Lighter color for original price */
-  margin-right: 10px; /* Add spacing between original and discounted price */
+  color: #888;
+  font-size: 1rem;
 }
 
-/* Highlight the discounted price */
-.course-price .discounted-price {
-  color: #e60000; /* Bold red color for discounted price */
-  font-weight: bold;
+.discounted-price {
+  color: #e74c3c;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .buy-icon {
-  color: #180f0f;
-  font-size: 1.5rem; /* Adjust size to match the price */
+  margin-top: 10px;
+  color: #333;
+  cursor: pointer;
 }
 
-/* Sale badge */
 .sale-badge {
-  position: absolute; /* Positioned at the top-left or top-right of the card */
+  position: absolute;
   top: 10px;
   left: 10px;
-  background-color: #ff0000; /* Bright red background for the sale badge */
-  color: rgb(5, 1, 1); /* White text for contrast */
-  padding: 5px 10px; /* Padding for better spacing */
-  font-size: 0.875rem; /* Font size */
-  font-weight: bold;
-  border-radius: 5px; /* Slight rounding of the corners */
-  transform: rotate(-15deg); /* Add a slight tilt to the badge for more style */
-  z-index: 1; /* Ensure the badge appears above the card content */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
+  background-color: #e74c3c;
+  color: white;
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  border-radius: 4px;
 }
 
-/* Optional: Enhance the sale badge for small screens */
 @media (max-width: 768px) {
-  .sale-badge {
-    font-size: 0.75rem; /* Slightly smaller font on small screens */
-    top: 8px;
-    left: 8px;
+  .product-card {
+    max-width: 100%;
+    margin-bottom: 20px;
   }
+
+  .product-image {
+    height: 150px;
+  }
+
+  .product-title {
+    font-size: 1rem;
+  }
+
+  .product-price {
+    font-size: 1rem;
+  }
+
+  .original-price {
+    font-size: 0.9rem;
+  }
+
+  .discounted-price {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card {
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .product-image {
+    height: 120px;
+  }
+
+  .product-title {
+    font-size: 0.9rem;
+  }
+
+  .product-description {
+    font-size: 0.85rem;
+  }
+
+  .product-price {
+    font-size: 0.9rem;
+  }
+
+  .original-price {
+    font-size: 0.8rem;
+  }
+
+  .discounted-price {
+    font-size: 1rem;
+  }
+}
+/* Remove underline from the link */
+.product-card-link {
+  text-decoration: none;
+  color: inherit; /* Inherit color from parent, ensuring it takes the correct color */
+}
+
+/* Product card hover effect without underline */
+.product-card-link:hover {
+  text-decoration: none; /* Prevent underline on hover */
+  color: inherit; /* Keep the same color on hover */
+}
+
+/* Ensure other text inside the card doesn't get underlined */
+.product-title, .product-description, .product-price {
+  text-decoration: none;
 }
