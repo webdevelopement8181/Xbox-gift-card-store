@@ -1,84 +1,87 @@
-import React, { useState, useEffect } from "react";
-import { account } from "../../appwrite"; // Adjust the import based on your setup
+import React, { useEffect, useState } from "react";
+import { account } from "../../appwrite"; 
 import { useNavigate } from "react-router-dom";
 import PropTypes from 'prop-types';
-import './Login.css'; 
 import { useDebouncedCallback } from 'use-debounce';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Memoized form component to prevent unnecessary re-renders
+// Material UI components
+import { TextField, Button, Grid, Container, Typography, Box } from '@mui/material';
+
 const AuthForm = React.memo(({ name, email, password, setName, setEmail, setPassword, handleLogin, handleSignUp }) => {
     return (
-        <div>
-            <h2>Login / Sign Up</h2>
-            <div className="input-section">
-                <input
-                    type="text"
-                    placeholder="Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="auth-input"
-                />
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="auth-input"
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="auth-input"
-                />
-            </div>
-            <div className="button-section">
-                <button onClick={handleLogin} className="auth-button">Login</button>
-                <button onClick={handleSignUp} className="auth-button">Sign Up</button>
-            </div>
-        </div>
+        <Box>
+            <Typography variant="h4" align="center">Login / Sign Up</Typography>
+            <Grid container spacing={2} mt={2}>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        label="Name"
+                        variant="outlined"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        label="Email"
+                        type="email"
+                        variant="outlined"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        label="Password"
+                        type="password"
+                        variant="outlined"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <Button fullWidth variant="contained" color="primary" onClick={handleLogin}>
+                        Login
+                    </Button>
+                </Grid>
+                <Grid item xs={6}>
+                    <Button fullWidth variant="outlined" onClick={handleSignUp}>
+                        Sign Up
+                    </Button>
+                </Grid>
+            </Grid>
+        </Box>
     );
 });
 
 const Login = ({ setIsAuthenticated, setUserInfo }) => {
     const [user, setUser] = useState(null);
-    const [name, setName] = useState(""); // State to store the user's name
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    // Debounced state updates to reduce re-renders on each keystroke
-    const debouncedSetName = useDebouncedCallback((value) => {
-        setName(value);
-    }, 50);
-    
-    const debouncedSetEmail = useDebouncedCallback((value) => {
-        setEmail(value);
-    }, 50);
-    
-    const debouncedSetPassword = useDebouncedCallback((value) => {
-        setPassword(value);
-    }, 50);
+    const debouncedSetName = useDebouncedCallback((value) => setName(value), 50);
+    const debouncedSetEmail = useDebouncedCallback((value) => setEmail(value), 50);
+    const debouncedSetPassword = useDebouncedCallback((value) => setPassword(value), 50);
 
-    // Only check for the user once on mount
     useEffect(() => {
         const checkUser = async () => {
             try {
                 const accountUser = await account.get();
                 setUser(accountUser);
                 setUserInfo(accountUser);
-                navigate("/"); // Redirect to home if logged in
+                navigate("/");
             } catch (error) {
-                console.log("User not authenticated", error);
-                setUser(null); // No user logged in
+                setUser(null);
             }
         };
-
         checkUser();
-    }, []); // No dependencies needed
+    }, [navigate, setUserInfo]);
 
     const handleLogin = async () => {
         try {
@@ -87,37 +90,45 @@ const Login = ({ setIsAuthenticated, setUserInfo }) => {
             const accountUser = await account.get();
             setUser(accountUser);
             setUserInfo(accountUser);
-            const isAdmin = accountUser?.labels?.includes('admin');
-            if (isAdmin) {
-                navigate("/admin");
-            } else {
-                navigate("/");
-            }
+            navigate(accountUser?.labels?.includes('admin') ? "/admin" : "/");
         } catch (error) {
-            toast.error("Invalid login credentials. Please try again."); // Show error as toast
+            toast.error("Invalid login credentials. Please try again.");
         }
     };
 
     const handleSignUp = async () => {
         try {
-            await account.create("unique()", email, password, name); // Pass the name to the account creation
-            handleLogin(); // Automatically log in after signing up
+            await account.create("unique()", email, password, name);
+            handleLogin();
         } catch (error) {
-            // Suppress logging for specific errors
-            if (error.code === 409) { // Check if error code is 409 for duplicate email
-                toast.error("Email already exists. Please use a different email."); // Show toast message
+            if (error.code === 409) {
+                toast.error("Email already exists. Please use a different email.");
             } else {
-                toast.error("Error signing up. Please try again."); // General error handling
+                toast.error("Error signing up. Please try again.");
             }
         }
     };
 
+    // Set background color for the body
+    useEffect(() => {
+        // Store the current background color to reset it later
+        const originalBackgroundColor = document.body.style.backgroundColor;
+        
+        // Set the new background color
+        document.body.style.backgroundColor = "#f0f4f7"; // Light blue-ish background
+        
+        // Cleanup: Revert to the original background color when the component unmounts
+        return () => {
+            document.body.style.backgroundColor = originalBackgroundColor;
+        };
+    }, []); // Empty dependency array to run only once on mount
+
     return (
-        <div className="auth-container">
+        <Container maxWidth="sm" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <ToastContainer />
-            <div className="auth-form">
+            <Box mt={5} p={3} boxShadow={3} borderRadius={2} sx={{ backgroundColor: '#fff' }}>
                 {user ? (
-                    <div>Redirecting...</div>
+                    <Typography variant="body1" align="center">Redirecting...</Typography>
                 ) : (
                     <AuthForm
                         name={name}
@@ -130,16 +141,21 @@ const Login = ({ setIsAuthenticated, setUserInfo }) => {
                         handleSignUp={handleSignUp}
                     />
                 )}
-                <div onClick={() => navigate('/')} className="redirect-message">
+                <Typography
+                    variant="body2"
+                    align="center"
+                    onClick={() => navigate('/')}
+                    style={{ marginTop: '20px', cursor: 'pointer', color: 'blue' }}
+                >
                     Click here if you don't want to sign in/login
-                </div>
-            </div>
-        </div>
+                </Typography>
+            </Box>
+        </Container>
     );
 };
 
 Login.propTypes = {
-    setIsAuthenticated: PropTypes.func.isRequired,  
+    setIsAuthenticated: PropTypes.func.isRequired,
     setUserInfo: PropTypes.func.isRequired,
 };
 

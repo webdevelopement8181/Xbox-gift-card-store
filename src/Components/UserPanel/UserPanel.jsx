@@ -1,194 +1,229 @@
 import React, { useEffect, useState } from 'react';
 import { account, getUserPayments, updateUser } from '../../appwrite';
+import { Grid, Box, Typography, Button, TextField, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import profileImage from '../../assets/img/profile.jpg';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UserPanel = () => {
-  const [userId, setUserId] = useState(null);
-  const [userInfo, setUserInfo] = useState({
-    name: '',
-    email: '',
-  });
-  const [payments, setPayments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    newPassword: '', // New password field
-  });
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(''); // Success message state
-
-  // Fetch userId and user information when the component mounts
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const user = await account.get();
-        setUserId(user.$id);
-        setUserInfo({ name: user.name || '', email: user.email });
-        setFormData({
-          name: user.name || '',
-          email: user.email,
-          password: '',
-          newPassword: '',
-        });
-      } catch (error) {
-        console.error('Error fetching user info:', error);
-      }
-    };
-    fetchUserDetails();
-  }, []);
-
-  // Fetch payments and parse the productList string
-  useEffect(() => {
-    const fetchUserPayments = async () => {
-      try {
-        if (!userId) return;
-
-        const userPayments = await getUserPayments(userId);
-        setPayments(userPayments);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching payments or products:', error);
-      }
-    };
-
-    if (userId) {
-      fetchUserPayments();
-    }
-  }, [userId]);
-
-  // Handle form field changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
+    const [userId, setUserId] = useState(null);
+    const [userInfo, setUserInfo] = useState({
+        name: '',
+        email: '',
+        profileImage: '', // Placeholder for user profile image
     });
-    // Clear the error when the user starts typing
-    setError('');
-    setSuccess('');
-  };
+    const [payments, setPayments] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [isEditing, setIsEditing] = useState(false);
+    const [isChangingPassword, setIsChangingPassword] = useState(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+    });
+    const [passwordData, setPasswordData] = useState({
+        currentPassword: '',
+        newPassword: '',
+    });
 
-  // Handle updating the user's information and password
-  const handleUpdate = async () => {
-    try {
-      if (!formData.password) {
-        throw new Error('Current password is required to make changes.');
-      }
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            try {
+                const user = await account.get();
+                setUserId(user.$id);
+                setUserInfo({ name: user.name || '', email: user.email, profileImage: user.profileImage || '' });
+                setFormData({
+                    name: user.name || '',
+                    email: user.email,
+                });
+            } catch (error) {
+                console.error('Error fetching user info:', error);
+            }
+        };
+        fetchUserDetails();
+    }, []);
 
-      await updateUser(formData.email, formData.name, formData.newPassword, formData.password);
-      setUserInfo({ name: formData.name, email: formData.email });
-      setIsEditing(false);
-      setSuccess('User information updated successfully!');
-      setError(''); // Clear error on success
-    } catch (error) {
-      setError(error.message);
-      setSuccess(''); // Clear success message on error
+    useEffect(() => {
+        const fetchUserPayments = async () => {
+            try {
+                if (!userId) return;
+
+                const userPayments = await getUserPayments(userId);
+                setPayments(userPayments);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching payments:', error);
+            }
+        };
+
+        if (userId) {
+            fetchUserPayments();
+        }
+    }, [userId]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    const handlePasswordChange = (e) => {
+        const { name, value } = e.target;
+        setPasswordData({
+            ...passwordData,
+            [name]: value,
+        });
+    };
+
+    const handleUpdate = async () => {
+        try {
+            await updateUser(formData.email, formData.name);
+            setUserInfo({ ...userInfo, name: formData.name, email: formData.email });
+            setIsEditing(false);
+            toast.success('User information updated successfully!');
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
+
+    const handleChangePassword = async () => {
+        try {
+            if (!passwordData.currentPassword || !passwordData.newPassword) {
+                throw new Error('Both current and new passwords are required.');
+            }
+
+            await updateUser(formData.email, userInfo.name, passwordData.newPassword, passwordData.currentPassword);
+            toast.success('Password changed successfully!');
+            setPasswordData({ currentPassword: '', newPassword: '' });
+            setIsChangingPassword(false);
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
+
+    if (loading) {
+        return <Typography>Loading user payments and products...</Typography>;
     }
-  };
 
-  if (loading) {
-    return <p>Loading user payments and products...</p>;
-  }
+    return (
+        <Grid container spacing={3} justifyContent="center">
+            <ToastContainer />
+            <Grid item xs={12} md={6}>
+                <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
+                    {/* Image Section */}
+                    <Box mb={2} display="flex" justifyContent="center">
+                    <img
+                     src={profileImage}
+                     alt="Profile"
+                     style={{ width: 80, height: 80, borderRadius: '50%' }}
+                     />
+                    </Box>
 
-  return (
-    <div className="user-panel">
-      <h2>User Information</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>} {/* Show error message */}
-      {success && <p style={{ color: 'green' }}>{success}</p>} {/* Show success message */}
-      {isEditing ? (
-        <div>
-          <label>
-            Name:
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-            />
-          </label>
-          <br />
-          <label>
-            Email:
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </label>
-          <br />
-          <label>
-            Current Password:
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <br />
-          <label>
-            New Password (optional):
-            <input
-              type="password"
-              name="newPassword"
-              value={formData.newPassword}
-              onChange={handleChange}
-            />
-          </label>
-          <br />
-          <button onClick={handleUpdate}>Save</button>
-          <button onClick={() => setIsEditing(false)}>Cancel</button>
-        </div>
-      ) : (
-        <div>
-          <p><strong>Name:</strong> {userInfo.name || 'No name provided'}</p>
-          <p><strong>Email:</strong> {userInfo.email}</p>
-          <button onClick={() => setIsEditing(true)}>Edit</button>
-        </div>
-      )}
+                    {isEditing ? (
+                        <Box component="form" noValidate autoComplete="off">
+                            <TextField
+                                label="Name"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                fullWidth
+                                margin="normal"
+                            />
+                            <TextField
+                                label="Email"
+                                name="email"
+                                type="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                fullWidth
+                                margin="normal"
+                            />
+                            <Box mt={2}>
+                                <Button variant="contained" color="primary" onClick={handleUpdate} sx={{ mr: 2 }}>
+                                    Save
+                                </Button>
+                                <Button variant="outlined" onClick={() => setIsEditing(false)}>
+                                    Cancel
+                                </Button>
+                                <Button variant="outlined" onClick={() => setIsChangingPassword(!isChangingPassword)} sx={{ ml: 2 }}>
+                                    Change Password
+                                </Button>
+                            </Box>
+                            {isChangingPassword && (
+                                <Box mt={3}>
+                                    <Typography variant="h6">Change Password</Typography>
+                                    <TextField
+                                        label="Current Password"
+                                        name="currentPassword"
+                                        type="password"
+                                        value={passwordData.currentPassword}
+                                        onChange={handlePasswordChange}
+                                        fullWidth
+                                        margin="normal"
+                                        required
+                                    />
+                                    <TextField
+                                        label="New Password"
+                                        name="newPassword"
+                                        type="password"
+                                        value={passwordData.newPassword}
+                                        onChange={handlePasswordChange}
+                                        fullWidth
+                                        margin="normal"
+                                        required
+                                    />
+                                    <Button variant="contained" color="primary" onClick={handleChangePassword} sx={{ mt: 2 }}>
+                                        Change Password
+                                    </Button>
+                                </Box>
+                            )}
+                        </Box>
+                    ) : (
+                        <Box>
+                            <Typography><strong>Name:</strong> {userInfo.name || 'No name provided'}</Typography>
+                            <Typography><strong>Email:</strong> {userInfo.email}</Typography>
+                            <Box mt={2}>
+                                <Button variant="contained" onClick={() => setIsEditing(true)}>
+                                    Edit
+                                </Button>
+                            </Box>
+                        </Box>
+                    )}
+                </Paper>
+            </Grid>
 
-      <h2>Your Payments and Products</h2>
-      {payments.length === 0 ? (
-        <p>No payments found for this user.</p>
-      ) : (
-        <div>
-          {payments.map((payment, index) => (
-            <div key={index} className="payment-section">
-              <h3>Payment ID: {payment.$id}</h3>
-              {payment.productList && payment.productList !== '[]' ? (
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Product Title</th>
-                      <th>Final Price</th>
-                      <th>Count</th>
-                      <th>Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {JSON.parse(payment.productList).map((product, i) => (
-                      <tr key={i}>
-                        <td>{product.title}</td>
-                        <td>${product.finalPrice}</td>
-                        <td>{product.count}</td>
-                        <td>${product.count * product.finalPrice}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
-                <p>No products found in this payment.</p>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+            <Grid item xs={12}>
+                <Paper elevation={3} sx={{ p: 3 }}>
+                    <Typography variant="h4" gutterBottom sx={{ textAlign: 'center' }}>Your Payments and Products</Typography>
+                    {payments.length === 0 ? (
+                        <Typography>No payments found for this user.</Typography>
+                    ) : (
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell sx={{ backgroundColor: '#6A9AB0' }}>Product Title</TableCell>
+                                    <TableCell sx={{ backgroundColor: '#6A9AB0' }}>Count</TableCell>
+                                    <TableCell sx={{ backgroundColor: '#6A9AB0' }}>Final Price</TableCell>
+                                    <TableCell sx={{ backgroundColor: '#6A9AB0' }}>Total</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {payments.map((payment, index) => (
+                                    <TableRow key={index}>
+                                        <TableCell>{JSON.parse(payment.productList)[0]?.title || 'N/A'}</TableCell>
+                                        <TableCell>{JSON.parse(payment.productList)[0]?.count || 'N/A'}</TableCell>
+                                        <TableCell>${JSON.parse(payment.productList)[0]?.finalPrice || 'N/A'}</TableCell>
+                                        <TableCell>${(JSON.parse(payment.productList)[0]?.finalPrice * JSON.parse(payment.productList)[0]?.count) || 'N/A'}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    )}
+                </Paper>
+            </Grid>
+        </Grid>
+    );
 };
 
 export default UserPanel;
