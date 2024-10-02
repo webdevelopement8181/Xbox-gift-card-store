@@ -89,8 +89,8 @@ export const fetchProducts = async (minPrice, maxPrice, Category, newest = false
     const queries = [
       Query.greaterThanEqual('price', minPrice),  
       Query.lessThanEqual('price', maxPrice),     
-      Query.limit(limit),                         
-      Query.offset(offset)                        
+      Query.limit(limit),                          // Limit the number of products per page
+      Query.offset(offset)                         // Offset for pagination
     ];
 
     if (Category) {
@@ -98,21 +98,26 @@ export const fetchProducts = async (minPrice, maxPrice, Category, newest = false
     }
 
     if (newest) {
-      queries.push(Query.orderDesc('$createdAt'));
+      queries.push(Query.orderDesc('$createdAt'));      // Sort by newest
     }
 
     const response = await databases.listDocuments(
-      '66cde1b70007c60cbc12', // Database ID
-      '66cde1ce003c4c7dfb11', // Collection ID
+      '66cde1b70007c60cbc12',  // Database ID
+      '66cde1ce003c4c7dfb11',  // Collection ID
       queries
     );
 
-    return response.documents;
+    // Return both the products and the total count of products
+    return {
+      products: response.documents,  // The actual products for the current page
+      total: response.total          // The total number of products
+    };
   } catch (error) {
     console.error('Error fetching products by price, category, and date:', error);
     throw error;
   }
 };
+
 
 // Fetch function data (optional, depending on your use case)
 export const fetchFunctionData = async (code, price) => {

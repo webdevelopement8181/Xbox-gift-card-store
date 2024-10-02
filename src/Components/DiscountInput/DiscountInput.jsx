@@ -1,37 +1,31 @@
 import React, { useState } from 'react';
 import { fetchFunctionData } from '../../appwrite';  
 import { useCart } from '../Context/CartContext';  
-import './DiscountInput.css';  
+import { Box, TextField, Button, Typography, InputAdornment } from '@mui/material';
+import { FaTag } from 'react-icons/fa';
 
 const DiscountComponent = () => {
-  const { cartItems, calculateDiscountedPrice, setDiscountedPrice } = useCart();  // Access setDiscountedPrice from context
+  const { cartItems, calculateDiscountedPrice, setDiscountedPrice } = useCart();
 
   const [code, setCode] = useState('');
   const [message, setMessage] = useState('');
 
-  // Calculate the total price of all items in the cart without any discount from the code
   const totalPrice = cartItems.reduce((total, item) => {
-    const itemDiscountedPrice = calculateDiscountedPrice(item);  // Calculate discounted price based on item.sale status
+    const itemDiscountedPrice = calculateDiscountedPrice(item);
     return total + itemDiscountedPrice * item.quantity;
   }, 0).toFixed(2);
-
-  console.log('Total Price (before any discount):', totalPrice);  // For debugging
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      // Send discount code and full price (without discount) to the backend
       const response = await fetchFunctionData(code, parseFloat(totalPrice));
 
       if (response.success) {
-        setDiscountedPrice(response.discountedPrice);  // Set discounted price in the context
-        setMessage(response.message); 
-        
-        // Log the discounted price for debugging
-        console.log('Discounted Price (after applying discount):', response.discountedPrice);  // For debugging
+        setDiscountedPrice(response.discountedPrice);
+        setMessage(response.message);
       } else {
-        setMessage(response.message);  
+        setMessage(response.message);
       }
     } catch (error) {
       setMessage('Error checking the discount code.');
@@ -39,21 +33,44 @@ const DiscountComponent = () => {
   };
 
   return (
-    <div className="discount-container">
-      <h2 className="discount-heading">Enter Discount Code</h2>
-      <form onSubmit={handleSubmit} className="discount-form">
-        <input
-          type="text"
-          placeholder="Enter discount code"
-          className="discount-input"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          required
-        />
-        <button type="submit" className="discount-button">Apply Discount</button>
+    <Box mt={8} textAlign="center">
+    <Typography sx={{ marginBottom: '29px'}} variant="h6" gutterBottom>
+  Enter Discount Code
+</Typography>
+
+      <form onSubmit={handleSubmit}>
+        <Box display="flex" justifyContent="center" alignItems="center" mb={2}>
+          <TextField
+            label="Discount Code"
+            variant="outlined"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            required
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <FaTag />
+                </InputAdornment>
+              ),
+            }}
+            sx={{ width: '300px', marginRight: 2 }}
+          />
+          <Button 
+            type="submit" 
+            variant="contained" 
+            color="primary"
+            sx={{ height: '56px' }}  // Align button height with TextField
+          >
+            Apply
+          </Button>
+        </Box>
       </form>
-      {message && <p className="discount-message">{message}</p>}
-    </div>
+      {message && (
+        <Typography variant="body1" color="error" mt={2}>
+          {message}
+        </Typography>
+      )}
+    </Box>
   );
 };
 

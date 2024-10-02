@@ -14,10 +14,17 @@
 }
 
 .slick-slide {
-
   display: flex;
   justify-content: center;
   padding: 10px;
+}
+.slick-dots {
+  margin-bottom: 35%; 
+/* background-color: aqua; */
+}
+
+.slick-dots li {
+  margin: 0 5px; /* Adds horizontal space between dots */
 }
 
 .slick-dots li button:before {

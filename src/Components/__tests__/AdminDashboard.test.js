@@ -26,30 +26,30 @@ describe('AdminDashboard Component', () => {
     expect(screen.getByText('ChartDashboard Component')).toBeInTheDocument();
   });
 
-  test('renders correct outlet component on /admin/courses route', () => {
+  test('renders correct outlet component on /admin/Products route', () => {
     render(
-      <MemoryRouter initialEntries={['/admin/courses']}>
+      <MemoryRouter initialEntries={['/admin/Products']}>
         <Routes>
           <Route path="/admin/*" element={<AdminDashboard />} />
-          <Route path="/admin/courses" element={<div>Manage Courses Component</div>} />
+          <Route path="/admin/Products" element={<div>Manage Products Component</div>} />
         </Routes>
       </MemoryRouter>
     );
 
-    expect(screen.getByText('Manage Courses Component')).toBeInTheDocument();
+    expect(screen.getByText('Manage Products Component')).toBeInTheDocument();
   });
 
-  test('renders correct outlet component on /admin/course-details route', () => {
+  test('renders correct outlet component on /admin/Product-details route', () => {
     render(
-      <MemoryRouter initialEntries={['/admin/course-details']}>
+      <MemoryRouter initialEntries={['/admin/Product-details']}>
         <Routes>
           <Route path="/admin/*" element={<AdminDashboard />} />
-          <Route path="/admin/course-details" element={<div>Manage Course Details Component</div>} />
+          <Route path="/admin/Product-details" element={<div>Manage Product Details Component</div>} />
         </Routes>
       </MemoryRouter>
     );
 
-    expect(screen.getByText('Manage Course Details Component')).toBeInTheDocument();
+    expect(screen.getByText('Manage Product Details Component')).toBeInTheDocument();
   });
 
   test('renders correct outlet component on /admin/transaction route', () => {

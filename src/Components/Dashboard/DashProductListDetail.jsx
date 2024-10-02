@@ -2,13 +2,13 @@ import React,{ useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconButton, Table, TableBody, TableCell, TableHead, TableRow, Paper, Container } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
-import { databases } from '../../appwrite'; // Make sure to import your appwrite instance correctly
+import { databases } from '../../appwrite'; 
 
-const CourseListDetail = () => {
+const ProductListDetail = () => {
     const [details, setDetails] = useState([]);
     const navigate = useNavigate();
 
-    const collectionId = '66cde5d000045bfa07ae'; // ID of the courseDetails collection
+    const collectionId = '66cde5d000045bfa07ae'; // ID of the ProductDetails collection
 
     useEffect(() => {
         const fetchDetails = async () => {
@@ -34,7 +34,7 @@ const CourseListDetail = () => {
     };
 
     const handleEdit = (id) => {
-        navigate(`/admin/course-details/edit/${id}`);
+        navigate(`/admin/Product-details/edit/${id}`);
     };
 
     return (
@@ -84,4 +84,4 @@ const CourseListDetail = () => {
     );
 };
 
-export default CourseListDetail;
+export default ProductListDetail;

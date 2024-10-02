@@ -11,7 +11,7 @@ const AdminRoute = () => {
         const checkAdmin = async () => {
             try {
                 const user = await account.get();
-                if (user?.labels?.includes('admin')) { // Assuming 'labels' field in the user object
+                if (user?.labels?.includes('admin')) { 
                     setIsAdmin(true);
                 } else {
                     setIsAdmin(false);

@@ -10,7 +10,7 @@ const UserPanel = () => {
     const [userInfo, setUserInfo] = useState({
         name: '',
         email: '',
-        profileImage: '', // Placeholder for user profile image
+        profileImage: '',
     });
     const [payments, setPayments] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -113,15 +113,25 @@ const UserPanel = () => {
                 <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
                     {/* Image Section */}
                     <Box mb={2} display="flex" justifyContent="center">
-                    <img
-                     src={profileImage}
-                     alt="Profile"
-                     style={{ width: 80, height: 80, borderRadius: '50%' }}
-                     />
+                        <img
+                            src={profileImage}
+                            alt="Profile"
+                            style={{ width: 80, height: 80, borderRadius: '50%' }}
+                        />
                     </Box>
 
                     {isEditing ? (
-                        <Box component="form" noValidate autoComplete="off">
+                        <Box
+                            component="form"
+                            noValidate
+                            autoComplete="off"
+                            sx={{ 
+                                display: 'flex', 
+                                flexDirection: 'column', 
+                                alignItems: 'center', // Center items
+                                justifyContent: 'center' // Horizontally center items
+                            }}
+                        >
                             <TextField
                                 label="Name"
                                 name="name"
@@ -129,6 +139,7 @@ const UserPanel = () => {
                                 onChange={handleChange}
                                 fullWidth
                                 margin="normal"
+                                sx={{ maxWidth: '300px' }} // Limit the width for better layout
                             />
                             <TextField
                                 label="Email"
@@ -138,8 +149,9 @@ const UserPanel = () => {
                                 onChange={handleChange}
                                 fullWidth
                                 margin="normal"
+                                sx={{ maxWidth: '300px' }} // Limit the width for better layout
                             />
-                            <Box mt={2}>
+                            <Box mt={2} sx={{ display: 'flex', justifyContent: 'center' }}>
                                 <Button variant="contained" color="primary" onClick={handleUpdate} sx={{ mr: 2 }}>
                                     Save
                                 </Button>
@@ -151,7 +163,7 @@ const UserPanel = () => {
                                 </Button>
                             </Box>
                             {isChangingPassword && (
-                                <Box mt={3}>
+                                <Box mt={3} sx={{ maxWidth: '300px', textAlign: 'center' }}>
                                     <Typography variant="h6">Change Password</Typography>
                                     <TextField
                                         label="Current Password"
@@ -180,7 +192,12 @@ const UserPanel = () => {
                             )}
                         </Box>
                     ) : (
-                        <Box>
+                        <Box sx={{ 
+                            display: 'flex', 
+                            flexDirection: 'column', 
+                            alignItems: 'center', // Center profile info
+                            justifyContent: 'center' 
+                        }}>
                             <Typography><strong>Name:</strong> {userInfo.name || 'No name provided'}</Typography>
                             <Typography><strong>Email:</strong> {userInfo.email}</Typography>
                             <Box mt={2}>

@@ -9,7 +9,7 @@ import {
   import { useForm, useShow } from '@refinedev/core';
   import { DataGrid } from '@mui/x-data-grid';
   
-export const CourseList = () => {
+export const ProductList = () => {
   const { dataGridProps } = useDataGrid();
 
   return (

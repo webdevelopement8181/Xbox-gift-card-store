@@ -136,9 +136,9 @@ const ProductListDetails = () => {
             >
               Add to Cart
             </Button>
-            <Button variant="outlined" startIcon={<FaHeart />} fullWidth>
+            {/* <Button variant="outlined" startIcon={<FaHeart />} fullWidth>
               Add to Wishlist
-            </Button>
+            </Button> */}
           </Box>
         </Grid>
       </Grid>

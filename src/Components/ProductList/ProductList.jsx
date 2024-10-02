@@ -50,9 +50,9 @@ const ProductList = () => {
         breakpoint: 1440, // Large desktop
         settings: {
           slidesToShow: 5,
-          slidesToScroll: 1,
+          slidesToScroll: 2,
           infinite: true,
-          dots: true
+          dots: false
         }
       },
       {
@@ -61,7 +61,7 @@ const ProductList = () => {
           slidesToShow: 2,
           slidesToScroll: 1,
           infinite: true,
-          dots: true
+          dots: false
         }
       },
       {

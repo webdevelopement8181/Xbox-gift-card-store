@@ -9,7 +9,7 @@ const DocumentForm = ({ collectionName }) => {
     const { id: documentId } = useParams(); // Get the documentId from the route parameters
 
     const collectionMapping = {
-        onlineCourse: '66cde1ce003c4c7dfb11', 
+        onlineProduct: '66cde1ce003c4c7dfb11', 
     };
 
     const collectionId = collectionMapping[collectionName];

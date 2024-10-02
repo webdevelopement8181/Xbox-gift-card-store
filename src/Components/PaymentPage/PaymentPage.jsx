@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';  // Import useNavigate
-import { submitPayment, fetchPaymentStatus } from '../../appwrite';  // Removed savePaymentProducts
+import { useLocation, useNavigate } from 'react-router-dom';
+import { submitPayment, fetchPaymentStatus } from '../../appwrite';
+import { TextField, Button, Grid, Typography, Paper, CircularProgress, Alert } from '@mui/material';
 
 const UserForm = () => {
-  const location = useLocation();  
-  const navigate = useNavigate();  // Initialize useNavigate
-  const { userId, selectedProducts } = location.state || {};  
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { userId, selectedProducts } = location.state || {};
 
   const [formData, setFormData] = useState({
-    Name: '',  
+    Name: '',
     FamilyName: '',
     Email: '',
     Phone: ''
   });
-  
-  const [paymentId, setPaymentId] = useState(null); 
-  const [message, setMessage] = useState('');
-  const [paymentStatus, setPaymentStatus] = useState(null); 
 
-  // Handle form field changes
+  const [paymentId, setPaymentId] = useState(null);
+  const [message, setMessage] = useState('');
+  const [paymentStatus, setPaymentStatus] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -27,123 +28,136 @@ const UserForm = () => {
     });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      // Convert selectedProducts array to JSON string before saving it
       const productsAsString = JSON.stringify(selectedProducts);
-
-      // Include userId and productsAsString (JSON string) in the payment submission
       const newPaymentId = await submitPayment({
-        user_id: userId,  
-        Name: formData.Name,  
+        user_id: userId,
+        Name: formData.Name,
         FamilyName: formData.FamilyName,
         Email: formData.Email,
         Phone: formData.Phone,
         PaymentStatus: 'pending',
-        productList: productsAsString  // Store the selectedProducts as a JSON string
+        productList: productsAsString
       });
-      
-      console.log('New Payment ID:', newPaymentId); 
-      setPaymentId(newPaymentId); 
-      setPaymentStatus('pending');  
-      setMessage('');  
+
+      setPaymentId(newPaymentId);
+      setPaymentStatus('pending');
+      setMessage('');
     } catch (error) {
       console.error('Error submitting the form:', error);
       setMessage('Error submitting the form.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Poll the payment status from the backend
   useEffect(() => {
     if (paymentId) {
       const intervalId = setInterval(async () => {
         try {
-          const status = await fetchPaymentStatus(paymentId, userId);  
-          console.log('Fetched Payment Status:', status);  
-          setPaymentStatus(status); 
+          const status = await fetchPaymentStatus(paymentId, userId);
+          setPaymentStatus(status);
 
           if (status === 'success') {
             clearInterval(intervalId);
             setMessage('Payment successful! 🎉');
-            navigate('/userpanel');  // Navigate to UserPanel on success
+            navigate('/userpanel');
           } else if (status === 'failure') {
             clearInterval(intervalId);
             setMessage('Payment failed. Please try again.');
-            navigate('/');  // Navigate to home page on failure
+            navigate('/');
           }
         } catch (error) {
           console.error('Error fetching payment status:', error);
         }
-      }, 5000); // Check every 5 seconds
+      }, 5000);
 
-      return () => clearInterval(intervalId); // Clear interval on component unmount
+      return () => clearInterval(intervalId);
     }
   }, [paymentId, userId, navigate]);
 
   return (
-    <div>
+    <Paper elevation={3} sx={{ padding: 3, maxWidth: 600, margin: 'auto' }}>
+      <Typography variant="h5" component="h1" gutterBottom align="center">
+        User Information Form
+      </Typography>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name:</label>  
-          <input
-            id="name"
-            type="text"
-            name="Name"
-            value={formData.Name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="familyName"> Family Name:</label>
-          <input
-            id="familyName"
-            type="text"
-            name="FamilyName"
-            value={formData.FamilyName}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            id="email"
-            type="email"
-            name="Email"
-            value={formData.Email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="phone">Phone:</label>
-          <input
-            id="phone"
-            type="text"
-            name="Phone"
-            value={formData.Phone}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <button type="submit">Submit</button>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="First Name"
+              name="Name"
+              value={formData.Name}
+              onChange={handleChange}
+              required
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Last Name"
+              name="FamilyName"
+              value={formData.FamilyName}
+              onChange={handleChange}
+              required
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Email"
+              name="Email"
+              value={formData.Email}
+              onChange={handleChange}
+              required
+              type="email"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Phone"
+              name="Phone"
+              value={formData.Phone}
+              onChange={handleChange}
+              required
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={12} sx={{ textAlign: 'center' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              disabled={loading}
+              fullWidth
+              size="large"
+            >
+              {loading ? <CircularProgress size={24} /> : 'Submit'}
+            </Button>
+          </Grid>
+        </Grid>
       </form>
 
-      
-      {message && <p>{message}</p>}
-
-   
-      {paymentStatus === 'pending' && !message && (
-        <p>Waiting for admin confirmation...</p>
+      {message && (
+        <Alert severity={paymentStatus === 'success' ? 'success' : 'error'} sx={{ marginTop: 2 }}>
+          {message}
+        </Alert>
       )}
-    </div>
+
+      {paymentStatus === 'pending' && !message && (
+        <Typography variant="body1" align="center" sx={{ marginTop: 2 }}>
+          Waiting for admin confirmation...
+        </Typography>
+      )}
+    </Paper>
   );
 };
 
