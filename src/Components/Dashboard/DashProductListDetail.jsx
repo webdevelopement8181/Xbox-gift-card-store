@@ -1,8 +1,8 @@
-import React,{ useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IconButton, Table, TableBody, TableCell, TableHead, TableRow, Paper, Container } from '@mui/material';
+import { IconButton, Table, TableBody, TableCell, TableHead, TableRow, Paper, Container, TableContainer } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
-import { databases } from '../../appwrite'; 
+import { databases } from '../../appwrite';
 
 const ProductListDetail = () => {
     const [details, setDetails] = useState([]);
@@ -38,47 +38,65 @@ const ProductListDetail = () => {
     };
 
     return (
-        <Container>
-            <Paper elevation={3}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>ID</TableCell>
-                            <TableCell>Detailed Description</TableCell>
-                            <TableCell>Rating</TableCell>
-                            <TableCell>Language</TableCell>
-                            <TableCell>Demo Video</TableCell>
-                            <TableCell>Actions</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {details.length > 0 ? (
-                            details.map((detail) => (
-                                <TableRow key={detail.$id}>
-                                    <TableCell>{detail.$id}</TableCell>
-                                    <TableCell>{detail.detailedDescription}</TableCell>
-                                    <TableCell>{detail.rating}</TableCell>
-                                    <TableCell>{detail.language}</TableCell>
-                                    {/* <TableCell>{detail.demoVideo}</TableCell> */}
-                                    <TableCell>
-                                        <IconButton color="primary" onClick={() => handleEdit(detail.$id)}>
-                                            <Edit />
-                                        </IconButton>
-                                        <IconButton color="secondary" onClick={() => handleDelete(detail.$id)}>
-                                            <Delete />
-                                        </IconButton>
+        <Container 
+          maxWidth="xl" 
+          sx={{ 
+            marginTop: '20px',
+            marginLeft: { 
+                xl: '100px',  // Large screens (1920px)
+                lg: '80px',   // Medium-large screens
+                md: '60px',   // Medium screens
+                sm: '40px',   // Small screens
+                xs: '20px'    // Extra small screens (phones)
+            },
+            width: {
+                xl: '1600px', // Full-width for 1920px screens
+                lg: '1200px', // Slightly smaller for large desktops
+                md: '1000px', // Medium desktops
+                sm: '800px',  // Tablets
+                xs: '100%'    // Full-width for phones
+            } 
+          }}>
+            <Paper elevation={3} sx={{ p: 2, mt: 2 }}>
+                <TableContainer>
+                    <Table sx={{ minWidth: 650 }}>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>ID</TableCell>
+                                <TableCell>Detailed Description</TableCell>
+                                <TableCell>Rating</TableCell>
+                                <TableCell>Language</TableCell>
+                                <TableCell>Actions</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {details.length > 0 ? (
+                                details.map((detail) => (
+                                    <TableRow key={detail.$id}>
+                                        <TableCell>{detail.$id}</TableCell>
+                                        <TableCell>{detail.detailedDescription}</TableCell>
+                                        <TableCell>{detail.rating}</TableCell>
+                                        <TableCell>{detail.language}</TableCell>
+                                        <TableCell>
+                                            <IconButton color="primary" onClick={() => handleEdit(detail.$id)}>
+                                                <Edit />
+                                            </IconButton>
+                                            <IconButton color="secondary" onClick={() => handleDelete(detail.$id)}>
+                                                <Delete />
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={6} align="center">
+                                        No details found.
                                     </TableCell>
                                 </TableRow>
-                            ))
-                        ) : (
-                            <TableRow>
-                                <TableCell colSpan={6} align="center">
-                                    No details found.
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
+                            )}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             </Paper>
         </Container>
     );

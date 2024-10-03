@@ -1,13 +1,27 @@
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IconButton, Button, Table, TableBody, TableCell, TableHead, TableRow, Paper, Container } from '@mui/material';
+import { 
+  IconButton, 
+  Button, 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableRow, 
+  Paper, 
+  Container, 
+  Grid, 
+  useMediaQuery 
+} from '@mui/material';
 import { Edit, Delete, Add } from '@mui/icons-material';
 import { databases } from '../../appwrite';
+import { useTheme } from '@mui/material/styles';
 
 const ProductList = () => {
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -40,18 +54,54 @@ const ProductList = () => {
   };
 
   return (
-    <Container>
-      <Paper elevation={3}>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<Add />}
-          onClick={handleCreate}
-          style={{ margin: '20px' }}
-        >
-          Create
-        </Button>
-        <Table>
+    <Container maxWidth="xl" sx={{ marginTop: '20px' ,    marginLeft:{ 
+      xl:'180px',
+      lg:'120px',
+      md:'110px',
+      sm:'200px',
+      xs:'80px'}, }}>
+      <Paper elevation={3} sx={{ padding: '20px', overflowX: 'auto' }}>
+        <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
+          <Grid item xs={12} sm={6} md={4}>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<Add />}
+              onClick={handleCreate}
+              sx={{
+             
+                marginLeft:'30px',
+                fontSize: {
+                  xs: '12px',
+                  sm: '14px',
+                  md: '16px',
+                  lg: '16px',
+                },
+                width:{
+                  xs: '120px',
+                  sm: '180px',
+                  md: '160px',
+                  lg: '230px',
+                  // xl:'400px'
+                },
+                padding: {
+                  xs: '10px 5px',
+                  sm: '12px 8px',
+                  lg: '14px 10px',
+                },
+              }}
+            >
+              Create
+            </Button>
+          </Grid>
+        </Grid>
+        <Table sx={{ minWidth: '300px', marginTop: '20px', marginLeft:'30px',   width: {
+                  xl:'100%',
+                  lg:'90%',
+                  md:'80%',
+                  sm:'70%',
+                  xs:'60%'
+                }, }}>
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
@@ -65,10 +115,30 @@ const ProductList = () => {
                 <TableCell>{course.$id}</TableCell>
                 <TableCell>{course.title}</TableCell>
                 <TableCell>
-                  <IconButton color="primary" onClick={() => handleEdit(course.$id)}>
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleEdit(course.$id)}
+                    sx={{
+                      fontSize: {
+                        xs: '16px',
+                        sm: '18px',
+                        lg: '20px',
+                      },
+                    }}
+                  >
                     <Edit />
                   </IconButton>
-                  <IconButton color="secondary" onClick={() => handleDelete(course.$id)}>
+                  <IconButton
+                    color="secondary"
+                    onClick={() => handleDelete(course.$id)}
+                    sx={{
+                      fontSize: {
+                        xs: '16px',
+                        sm: '18px',
+                        lg: '20px',
+                      },
+                    }}
+                  >
                     <Delete />
                   </IconButton>
                 </TableCell>
@@ -82,4 +152,3 @@ const ProductList = () => {
 };
 
 export default ProductList;
-

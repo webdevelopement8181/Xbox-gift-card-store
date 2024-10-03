@@ -62,10 +62,10 @@ function App() {
             <Route path="*" element={<AdminDashboard />}>
               <Route path="transaction" element={<TransactionReview collectionName="PaymentData" />} />
               <Route path="" element={<ChartDashboard />} />
-              <Route path="products" element={<DashProductLis collectionName="onlineCourse" />} />
-              <Route path="Product-details" element={<DashProductListDetail collectionName="ProductListDetails" />} />
-              <Route path="Product/create" element={<DocumentForm collectionName="onlineCourse" />} />
-              <Route path="Product/edit/:id" element={<DocumentForm collectionName="onlineCourse" />} />
+              <Route path="products" element={<DashProductLis collectionName="productList" />} />
+              <Route path="Product-details" element={<DashProductListDetail collectionName="productDetails" />} />
+              <Route path="Product/create" element={<DocumentForm collectionName="productList" />} />
+              <Route path="Product/edit/:id" element={<DocumentForm collectionName="productList" />} />
               <Route path="Product-details/edit/:id" element={<DocumentFormDetail />} />
             </Route>
           </Route>
