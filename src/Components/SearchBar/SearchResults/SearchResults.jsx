@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { databases, Query } from '../../../appwrite';  
 import ProductsCards from '../../ProductsCard/ProductsCards';
-// import '../../../assets/SearchResult.css';
+import { Container, Grid, TextField, Typography, Box, Paper } from '@mui/material';
+import './SearchResults.css'; // Link the CSS file
+
 const SearchResults = () => {
   const location = useLocation();
   const [courses, setCourses] = useState([]);
@@ -34,7 +36,7 @@ const SearchResults = () => {
   }, []);
 
   if (hasError) {
-    return <div>Error fetching courses.</div>;
+    return <Typography variant="h6" color="error" align="center">Error fetching courses.</Typography>;
   }
 
   const normalizeString = (str) => str.trim().toLowerCase();
@@ -52,48 +54,51 @@ const SearchResults = () => {
   });
 
   return (
-    <div>
-      <h1>Search Results for "{searchQuery}"</h1>
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Typography variant="h4" align="center" gutterBottom>
+        Search Results for "{searchQuery}"
+      </Typography>
 
-      {/* Add input fields for min and max price */}
-      <div>
-        <label>Min Price: </label>
-        <input
+      {/* Price Filter Inputs */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 4 }}>
+        <TextField
+          label="Min Price"
           type="number"
           value={minPrice}
           onChange={(e) => setMinPrice(e.target.value)}
-          placeholder="Min Price"
+          variant="outlined"
         />
-
-        <label>Max Price: </label>
-        <input
+        <TextField
+          label="Max Price"
           type="number"
           value={maxPrice}
           onChange={(e) => setMaxPrice(e.target.value)}
-          placeholder="Max Price"
+          variant="outlined"
         />
+      </Box>
+
+      {/* Display Courses */}
+      <div className="products-grid">
+        {filteredCourses.length > 0 ? (
+          filteredCourses.map(course => (
+            <ProductsCards
+              key={course.$id}
+              id={course.$id}
+              title={course.title}
+              description={course.description}
+              price={course.price}
+              image={course.image}
+              inSale={course.inSale}
+              discountPercentage={course.discountPercentage}
+            />
+          ))
+        ) : (
+          <Typography variant="h6" align="center">
+            No results found for "{searchQuery}".
+          </Typography>
+        )}
       </div>
-
-      <div className="courses-list">
-  {filteredCourses.length > 0 ? (
-    filteredCourses.map(course => (
-      <ProductsCards
-        key={course.$id}
-        id={course.$id}
-        title={course.title}
-        description={course.description}
-        price={course.price}
-        image={course.image}
-        inSale={course.inSale}
-        discountPercentage={course.discountPercentage}
-      />
-    ))
-  ) : (
-    <p>No results found for "{searchQuery}".</p>
-  )}
-</div>
-
-    </div>
+    </Container>
   );
 };
 

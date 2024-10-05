@@ -22,27 +22,20 @@ const DocumentForm = ({ collectionName }) => {
     productList: '66cde1ce003c4c7dfb11',
   };
 
-  // Log the incoming collectionName prop
-  console.log('Received collectionName:', collectionName);
-
-  // Get collectionId based on collectionName
   const collectionId = collectionMapping[collectionName];
-
-  // Log the collectionId to see if it exists
-  console.log('Mapped Collection ID:', collectionId);
 
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     price: '',
     image: '',
-    Category: '', // New category field
-    IsPopular: false, // New isPopular field
+    Category: '', 
+    IsPopular: false, 
   });
 
   const [error, setError] = useState('');
 
-  // Fetch existing document if editing
+ 
   useEffect(() => {
     const fetchDocument = async () => {
       if (documentId) {
@@ -57,8 +50,8 @@ const DocumentForm = ({ collectionName }) => {
             description: response.description || '',
             price: response.price || '',
             image: response.image || '',
-            Category: response.Category || '', // Set category
-            IsPopular: response.IsPopular || false, // Set isPopular
+            Category: response.Category || '', 
+            IsPopular: response.IsPopular || false, 
           });
         } catch (error) {
           console.error('Error fetching document:', error);
