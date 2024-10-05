@@ -28,29 +28,30 @@ const AdminDashboard = () => {
                     onMouseLeave={handleDrawerClose}
                     PaperProps={{
                         style: {
-                            width: open ? '250px' : '60px',
+                            width: open ? '210px' : '60px',
                             transition: 'width 0.3s',
                             overflowX: 'hidden',
                             backgroundColor: '#301E67',
                             color: '#fff',
+                    
                         },
                     }}
                 >
                     <List>
                         <ListItem button component={Link} to="/admin">
-                            <HomeIcon style={{ color: '#fff', marginBottom: '20px', marginRight: open ? '20px' : '0' }} />
+                            <HomeIcon style={{ color: '#fff', marginBottom: '50px', marginRight: open ? '20px' : '0' }} />
                             {open && <ListItemText primary="Home" />}
                         </ListItem>
                         <ListItem button component={Link} to="/admin/products">
-                            <StoreIcon style={{ color: '#fff', marginBottom: '20px', marginRight: open ? '20px' : '0' }} />
+                            <StoreIcon style={{ color: '#fff', marginBottom: '50px', marginRight: open ? '20px' : '0' }} />
                             {open && <ListItemText primary="Manage Products" />}
                         </ListItem>
                         <ListItem button component={Link} to="/admin/Product-details">
-                            <PeopleIcon style={{ color: '#fff', marginBottom: '20px', marginRight: open ? '20px' : '0' }} />
+                            <PeopleIcon style={{ color: '#fff', marginBottom: '50px', marginRight: open ? '20px' : '0' }} />
                             {open && <ListItemText primary="Manage Product Details" />}
                         </ListItem>
                         <ListItem button component={Link} to="/admin/transaction">
-                            <PeopleIcon style={{ color: '#fff', marginBottom: '20px', marginRight: open ? '20px' : '0' }} />
+                            <PeopleIcon style={{ color: '#fff', marginBottom: '50px', marginRight: open ? '20px' : '0' }} />
                             {open && <ListItemText primary="Recent Transactions" />}
                         </ListItem>
                     </List>

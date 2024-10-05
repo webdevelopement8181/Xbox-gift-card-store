@@ -14,8 +14,10 @@ import {
   AreaChart,
   Area,
 } from 'recharts';
+import { Grid, Typography } from '@mui/material';
 import DynamicStatistics from './DynamicStatistics';
 
+// Recharts Custom Pie Active Shape Function
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
   const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill, payload, percent, value } = props;
@@ -62,6 +64,7 @@ const renderActiveShape = (props) => {
   );
 };
 
+// Mock Data
 const originalData = [
   { name: 'Page A', uv: 4000, pv: 2400, amt: 2400 },
   { name: 'Page B', uv: 3000, pv: 1398, amt: 2210 },
@@ -72,38 +75,12 @@ const originalData = [
   { name: 'Page G', uv: 3490, pv: 4300, amt: 2100 },
 ];
 
-let data = [...originalData];
-
-for (let i = 1; i <= 5; i++) {
-  const multiplier = 1 + i * 0.1;
-  const newData = originalData.map(d => ({
-    ...d,
-    name: `${d.name} ${i + 1}`,
-    uv: d.uv * multiplier,
-    pv: d.pv * multiplier,
-    amt: d.amt * multiplier,
-  }));
-  data = [...data, ...newData];
-}
-
 const pieData = [
   { name: 'Group A', value: 400 },
   { name: 'Group B', value: 300 },
   { name: 'Group C', value: 300 },
   { name: 'Group D', value: 200 },
 ];
-
-let expandedPieData = [...pieData];
-
-for (let i = 1; i <= 2; i++) {
-  const multiplier = 1 + i * 0.1;
-  const newPieData = pieData.map(d => ({
-    ...d,
-    name: `${d.name} ${i + 1}`,
-    value: d.value * multiplier,
-  }));
-  expandedPieData = [...expandedPieData, ...newPieData];
-}
 
 const ColumnGraph = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -115,96 +92,94 @@ const ColumnGraph = () => {
   return (
     <main className="main-container">
       <DynamicStatistics />
-      <div className="charts">
-        <div className="chart-background">
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart
-              data={originalData}
-              margin={{
-                top: 15,
-                right: 30,
-                left: 10,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="pv" fill="#8884d8" />
-              <Bar dataKey="uv" fill="#82ca9d" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+      
+      <Typography variant="h6" align="center" gutterBottom>
+      Chart Dashboard
+      </Typography>
 
-        <div className="chart-background">
-          <ResponsiveContainer width="100%" height={400}>
-            <AreaChart
-              data={data}
-              margin={{
-                top: 10,
-                right: 30,
-                left: 0,
-                bottom: 0,
-              }}
-            >
-              <defs>
-                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#00f3ff" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#00f3ff" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#8000ff" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#8000ff" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#444" />
-              <XAxis dataKey="name" tick={{ fill: '#fff' }} />
-              <YAxis tick={{ fill: '#fff' }} />
-              <Tooltip contentStyle={{ backgroundColor: '#333', borderColor: '#777', color: '#fff' }} />
-              <Legend verticalAlign="top" align="right" iconType="circle" />
-              <Area
-                type="monotone"
-                dataKey="uv"
-                stroke="#00f3ff"
-                fillOpacity={1}
-                fill="url(#colorUv)"
-                dot={{ stroke: '#00f3ff', strokeWidth: 2, r: 5 }}
-                activeDot={{ r: 8 }}
-              />
-              <Area
-                type="monotone"
-                dataKey="pv"
-                stroke="#8000ff"
-                fillOpacity={1}
-                fill="url(#colorPv)"
-                dot={{ stroke: '#8000ff', strokeWidth: 2, r: 5 }}
-                activeDot={{ r: 8 }}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
+      <Grid container spacing={3}>
+        {/* Bar Chart */}
+        <Grid item xs={12} md={6} lg={4} >
+          <div className="chart-background">
+            <ResponsiveContainer width="100%" height={400}>
+              <BarChart
+                data={originalData}
+                margin={{
+                  top: 15,
+                  right: 30,
+                  left: 10,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="pv" fill="#8884d8" />
+                <Bar dataKey="uv" fill="#82ca9d" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </Grid>
 
-        <div className="chart-background">
-          <ResponsiveContainer width="100%" height={400}>
-            <PieChart>
-              <Pie
-                activeIndex={activeIndex}
-                activeShape={renderActiveShape}
-                data={expandedPieData}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={80}
-                fill="#4E31AA"
-                dataKey="value"
-                onMouseEnter={onPieEnter}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
+        {/* Area Chart */}
+        <Grid item xs={12} md={6} lg={4} >
+          <div className="chart-background">
+            <ResponsiveContainer width="100%" height={400}>
+              <AreaChart
+                data={originalData}
+                margin={{
+                  top: 10,
+                  right: 30,
+                  left: 0,
+                  bottom: 0,
+                }}
+              >
+                <defs>
+                  <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#00f3ff" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#00f3ff" stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#8000ff" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#8000ff" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#444" />
+                <XAxis dataKey="name" tick={{ fill: '#fff' }} />
+                <YAxis tick={{ fill: '#fff' }} />
+                <Tooltip contentStyle={{ backgroundColor: '#333', borderColor: '#777', color: '#fff' }} />
+                <Legend verticalAlign="top" align="right" iconType="circle" />
+                <Area type="monotone" dataKey="uv" stroke="#00f3ff" fillOpacity={1} fill="url(#colorUv)" />
+                <Area type="monotone" dataKey="pv" stroke="#8000ff" fillOpacity={1} fill="url(#colorPv)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </Grid>
+
+        {/* Pie Chart */}
+        <Grid item xs={12} md={6} lg={4} >
+          <div className="chart-background">
+            <ResponsiveContainer width="100%" height={400}>
+              <PieChart>
+                <Pie
+                  activeIndex={activeIndex}
+                  activeShape={renderActiveShape}
+                  data={pieData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={80}
+                  fill="#4E31AA"
+                  dataKey="value"
+                  onMouseEnter={onPieEnter}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </Grid>
+      </Grid>
     </main>
   );
 };

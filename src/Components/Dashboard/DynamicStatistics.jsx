@@ -1,25 +1,20 @@
 import { useEffect, useState } from 'react';
-import '../../assets/css/DynamicStatistics.css';
-
-import {
-  BsFillArchiveFill,
-  BsPeopleFill,
-} from 'react-icons/bs';
-import { databases,  } from '../../appwrite';
+import { Grid, Card, CardContent, Typography } from '@mui/material';
+import { BsFillArchiveFill, BsPeopleFill } from 'react-icons/bs';
+import '../../assets/css/DynamicStatistics.css'
+import { databases } from '../../appwrite';
 
 const DynamicStatistics = () => {
   const [onlineProductCount, setOnlineProductCount] = useState(0);
-  
 
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
-        // Fetch number of titles in onlineProduct collection
-        const onlineProductResponse = await databases.listDocuments('66cde1b70007c60cbc12', '66cde1ce003c4c7dfb11');
-        console.log('OnlineProduct Response:', onlineProductResponse);  // Debugging output
+        const onlineProductResponse = await databases.listDocuments(
+          '66cde1b70007c60cbc12',
+          '66cde1ce003c4c7dfb11'
+        );
         setOnlineProductCount(onlineProductResponse.total);
-
-        
       } catch (error) {
         console.error('Error fetching statistics:', error);
       }
@@ -29,39 +24,57 @@ const DynamicStatistics = () => {
   }, []);
 
   return (
-    <div>
-       
-        <div className='container'>
-      <div className="main-title">
-        <h3>DASHBOARD</h3>
-      </div>
+    <div style={{ padding: '20px' }}>
+      <Typography variant="h4" align="center" marginBottom="50px" marginLeft="20px" gutterBottom>
+       Admin  Dashboard
+      </Typography>
 
-      <div className="main-cards">
-        <div className="card" style={{ backgroundColor: '#AA77FF' }}>
-          <div className="card-inner">
-            <h3>ONLINE ProductS</h3>
-            <BsFillArchiveFill className="card_icon" />
-          </div>
-          <h1>{onlineProductCount}</h1>
-        </div>
+      <Grid container spacing={3} justifyContent="center" marginLeft="20px">
+        {/* Online Products */}
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Card sx={{ backgroundColor: '#AA77FF', color: '#fff' }}>
+            <CardContent>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant="h6">ONLINE PRODUCTS</Typography>
+                <BsFillArchiveFill style={{ fontSize: '2rem' }} />
+              </div>
+              <Typography variant="h3" align="center">
+                {onlineProductCount}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
 
-        <div className="card" style={{ backgroundColor: '#5A639C' }}>
-          <div className="card-inner">
-            <h3>CUSTOMERS</h3>
-            <BsPeopleFill className="card_icon" />
-          </div>
-          <h1>15</h1>
-        </div>
-        
-        <div className="card" style={{ backgroundColor: '#5A639C' }}>
-          <div className="card-inner">
-            <h3>alerts</h3>
-            <BsPeopleFill className="card_icon" />
-          </div>
-          <h1>25</h1>
-        </div>
-      </div>
-    </div>
+        {/* Customers */}
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Card sx={{ backgroundColor: '#5A639C', color: '#fff' }}>
+            <CardContent>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant="h6">CUSTOMERS</Typography>
+                <BsPeopleFill style={{ fontSize: '2rem' }} />
+              </div>
+              <Typography variant="h3" align="center">
+                15
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Alerts */}
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Card sx={{ backgroundColor: '#5A639C', color: '#fff' }}>
+            <CardContent>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant="h6">ALERTS</Typography>
+                <BsPeopleFill style={{ fontSize: '2rem' }} />
+              </div>
+              <Typography variant="h3" align="center">
+                25
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
     </div>
   );
 };
