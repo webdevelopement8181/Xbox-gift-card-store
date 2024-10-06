@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import CourseList from '../Dashboard/CourseList';
-import { databases } from '../../appwrite';
+import DashProductLis from '../Dashboard/DashProductLis.jsx';
+import { databases } from '../../appwrite.js';
 
 
 
@@ -20,7 +20,7 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }));
 
-describe('CourseList Component', () => {
+describe('DashProductLis Component', () => {
   it('fetches and displays courses', async () => {
     const mockCourses = [
       { $id: '1', title: 'Course 1' },
@@ -32,7 +32,7 @@ describe('CourseList Component', () => {
     await act(async () => {
       render(
         <Router>
-          <CourseList />
+          <DashProductLis />
         </Router>
       );
     });
@@ -50,7 +50,7 @@ describe('CourseList Component', () => {
     await act(async () => {
       render(
         <Router>
-          <CourseList />
+          <DashProductLis />
         </Router>
       );
     });
@@ -58,6 +58,6 @@ describe('CourseList Component', () => {
     const createButton = screen.getByText('Create');
     fireEvent.click(createButton);
 
-    expect(mockNavigate).toHaveBeenCalledWith('/admin/courses/create');
+    expect(mockNavigate).toHaveBeenCalledWith('/admin/Product/create');
   });
 });

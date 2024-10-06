@@ -35,10 +35,10 @@ describe('PaymentPage Component', () => {
     );
 
     // Simulate form input
-    fireEvent.change(screen.getByLabelText('Name:'), { target: { value: 'John' } });
-    fireEvent.change(screen.getByLabelText('Family Name:'), { target: { value: 'Doe' } });
-    fireEvent.change(screen.getByLabelText('Email:'), { target: { value: 'john@example.com' } });
-    fireEvent.change(screen.getByLabelText('Phone:'), { target: { value: '1234567890' } });
+    fireEvent.change(screen.getByTestId('first-name-input'), { target: { value: 'John' } });
+    fireEvent.change(screen.getByTestId('family-name-input'), { target: { value: 'Doe' } });
+    fireEvent.change(screen.getByTestId('email-input'), { target: { value: 'john@example.com' } });
+    fireEvent.change(screen.getByTestId('phone-input'), { target: { value: '1234567890' } });
 
     // Simulate form submission
     fireEvent.click(screen.getByText('Submit'));
@@ -47,7 +47,7 @@ describe('PaymentPage Component', () => {
     await waitFor(() => {
       expect(submitPayment).toHaveBeenCalledWith(expect.objectContaining({
         user_id: 'user123',
-        Name: 'John',
+         FirstName: 'John',
         FamilyName: 'Doe',
         Email: 'john@example.com',
         Phone: '1234567890',
@@ -71,10 +71,10 @@ describe('PaymentPage Component', () => {
     );
 
     // Simulate form input
-    fireEvent.change(screen.getByLabelText('Name:'), { target: { value: 'John' } });
-    fireEvent.change(screen.getByLabelText('Family Name:'), { target: { value: 'Doe' } });
-    fireEvent.change(screen.getByLabelText('Email:'), { target: { value: 'john@example.com' } });
-    fireEvent.change(screen.getByLabelText('Phone:'), { target: { value: '1234567890' } });
+    fireEvent.change(screen.getByTestId('first-name-input'), { target: { value: 'John' } });
+  fireEvent.change(screen.getByTestId('family-name-input'), { target: { value: 'Doe' } });
+  fireEvent.change(screen.getByTestId('email-input'), { target: { value: 'john@example.com' } });
+  fireEvent.change(screen.getByTestId('phone-input'), { target: { value: '1234567890' } });
 
     // Simulate form submission
     fireEvent.click(screen.getByText('Submit'));
@@ -83,7 +83,7 @@ describe('PaymentPage Component', () => {
     await waitFor(() => {
       expect(submitPayment).toHaveBeenCalledWith(expect.objectContaining({
         user_id: 'user123',
-        Name: 'John',
+         FamilyName: 'John',
         FamilyName: 'Doe',
         Email: 'john@example.com',
         Phone: '1234567890',

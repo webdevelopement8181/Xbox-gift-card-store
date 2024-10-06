@@ -9,7 +9,7 @@ const UserForm = () => {
   const { userId, selectedProducts } = location.state || {};
 
   const [formData, setFormData] = useState({
-    Name: '',
+    FirstName: '',
     FamilyName: '',
     Email: '',
     Phone: ''
@@ -35,7 +35,7 @@ const UserForm = () => {
       const productsAsString = JSON.stringify(selectedProducts);
       const newPaymentId = await submitPayment({
         user_id: userId,
-        Name: formData.Name,
+        FirstName: formData.FirstName,
         FamilyName: formData.FamilyName,
         Email: formData.Email,
         Phone: formData.Phone,
@@ -90,22 +90,24 @@ const UserForm = () => {
             <TextField
               fullWidth
               label="First Name"
-              name="Name"
+              name="FirstName"
               value={formData.Name}
               onChange={handleChange}
               required
               variant="outlined"
+              inputProps={{ 'data-testid': 'first-name-input' }}  // Add this line
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label="Last Name"
+              label="Family Name"
               name="FamilyName"
               value={formData.FamilyName}
               onChange={handleChange}
               required
               variant="outlined"
+              inputProps={{ 'data-testid': 'family-name-input' }}  // Add this line
             />
           </Grid>
           <Grid item xs={12}>
@@ -118,6 +120,7 @@ const UserForm = () => {
               required
               type="email"
               variant="outlined"
+              inputProps={{ 'data-testid': 'email-input' }}  // Add this line
             />
           </Grid>
           <Grid item xs={12}>
@@ -129,6 +132,8 @@ const UserForm = () => {
               onChange={handleChange}
               required
               variant="outlined"
+              inputProps={{ 'data-testid': 'phone-input' }}  // Add this line
+
             />
           </Grid>
           <Grid item xs={12} sx={{ textAlign: 'center' }}>

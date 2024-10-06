@@ -144,7 +144,7 @@ const Products = () => {
       <Box mt={4} display="flex" justifyContent="center">
         <Pagination
           productsPerPage={productsPerPage}
-          totalProducts={totalProducts}  // Pass dynamically fetched total products here
+          totalProducts={totalProducts}  
           paginate={paginate}
           currentPage={currentPage}
         />

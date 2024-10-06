@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, act, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import CourseListDetail from '../Dashboard/CreateListDetail.jsx';
-import { databases } from '../../appwrite';
+import DashProductListDetail from '../Dashboard/DashProductListDetail.jsx'
+import { databases } from '../../appwrite.js';
 
 // Mocking the databases object
 jest.mock('../../appwrite', () => ({
@@ -19,7 +19,7 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }));
 
-describe('CourseListDetail Component', () => {
+describe('DashProductListDetail Component', () => {
   it('fetches and displays course details', async () => {
     const mockDetails = [
       { $id: '1', detailedDescription: 'Detail 1', rating: 5, language: 'English' },
@@ -32,7 +32,7 @@ describe('CourseListDetail Component', () => {
     await act(async () => {
       render(
         <Router>
-          <CourseListDetail />
+          <DashProductListDetail />
         </Router>
       );
     });
@@ -55,7 +55,7 @@ describe('CourseListDetail Component', () => {
     await act(async () => {
       render(
         <Router>
-          <CourseListDetail />
+          <DashProductListDetail />
         </Router>
       );
     });

@@ -9,15 +9,14 @@ const Footer = () => {
         {/* Information Section */}
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="h6" gutterBottom>
-            Information
+            Know more
           </Typography>
           <ul>
-            <li><Link href="#" color="inherit" underline="hover">About Us</Link></li>
-            <li><Link href="#" color="inherit" underline="hover">More Search</Link></li>
-            <li><Link href="#" color="inherit" underline="hover">Blog</Link></li>
-            <li><Link href="#" color="inherit" underline="hover">Testimonials</Link></li>
-            <li><Link href="#" color="inherit" underline="hover">Events</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">Information</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">Our Servicesn</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">Contact Us</Link></li>
           </ul>
+          
         </Grid>
 
         {/* Helpful Links Section */}
@@ -26,10 +25,9 @@ const Footer = () => {
             Helpful Links
           </Typography>
           <ul>
-            <li><Link href="#" color="inherit" underline="hover">Services</Link></li>
-            <li><Link href="#" color="inherit" underline="hover">Supports</Link></li>
-            <li><Link href="#" color="inherit" underline="hover">Terms & Condition</Link></li>
-            <li><Link href="#" color="inherit" underline="hover">Privacy Policy</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">About Us</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">More Search</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">Blog</Link></li>
           </ul>
         </Grid>
 
@@ -39,18 +37,16 @@ const Footer = () => {
             Our Services
           </Typography>
           <ul>
-            <li><Link href="#" color="inherit" underline="hover">Brands list</Link></li>
-            <li><Link href="#" color="inherit" underline="hover">Order</Link></li>
-            <li><Link href="#" color="inherit" underline="hover">Return & Exchange</Link></li>
-            <li><Link href="#" color="inherit" underline="hover">Fashion list</Link></li>
-            <li><Link href="#" color="inherit" underline="hover">Blog</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">About xbox</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">Services</Link></li>
+            <li><Link href="#" color="inherit" underline="hover">Privacy Policy</Link></li>
           </ul>
         </Grid>
 
         {/* Contact Us Section */}
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="h6" gutterBottom>
-            Contact Us
+            Be In Touch With Us
           </Typography>
           <ul>
             <li>

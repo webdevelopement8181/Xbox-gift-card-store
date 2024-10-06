@@ -111,11 +111,11 @@ const Login = ({ setIsAuthenticated, setUserInfo }) => {
 
     // Set background color for the body
     useEffect(() => {
-        // Store the current background color to reset it later
+      
         const originalBackgroundColor = document.body.style.backgroundColor;
         
         // Set the new background color
-        document.body.style.backgroundColor = "#f0f4f7"; // Light blue-ish background
+        document.body.style.backgroundColor = "#f0f4f7"; 
         
         // Cleanup: Revert to the original background color when the component unmounts
         return () => {
